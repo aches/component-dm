@@ -11,6 +11,7 @@ import indexVue  from '../index.vue';
 import updateVue from '../pages/update.vue';
 import addVue    from '../pages/add.vue';
 import settingVue    from '../pages/setting.vue';
+import packageVue    from '../pages/package.vue';
 
 Vue.use(Router)
 
@@ -26,6 +27,12 @@ const router = new Router({
                     name: 'component.setting',
                     alias: '',
                     component:  settingVue,
+                },
+                {
+                    path: '/package-page',
+                    name: 'widget.package',
+                    alias: '',
+                    component:  packageVue,
                 },
                 {
                     path: '/update-page',

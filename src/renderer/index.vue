@@ -8,21 +8,21 @@
               <i class="el-icon-menu"></i>
               <span slot="title" slot-scope="title">配置管理</span>
           </el-menu-item>
-          <el-menu-item index="add-page">
+          <el-menu-item index="package-page">
+            <i class="el-icon-menu"></i>
+            <span slot="title" slot-scope="title">微件打包</span>
+          </el-menu-item>
+     <!--     <el-menu-item index="update-page">
             <i class="el-icon-menu"></i>
             <span slot="title" slot-scope="title">导航二</span>
-          </el-menu-item>
-          <el-menu-item index="update-page">
-            <i class="el-icon-menu"></i>
-            <span slot="title" slot-scope="title">导航二</span>
-          </el-menu-item>
+          </el-menu-item>-->
         </el-menu>
 
       </el-aside>
       <el-container>
-        <el-header>
-          header
-        </el-header>
+        <!--<el-header>
+         &lt;!&ndash; header&ndash;&gt;
+        </el-header>-->
         <el-main>
           <router-view></router-view>
         </el-main>
