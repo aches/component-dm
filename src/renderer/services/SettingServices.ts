@@ -37,4 +37,9 @@ export class SettingServices {
         this.settingStore.saveProjectPath(projectPath);
     }
 
+    checkProjectPath(): boolean {
+
+        return false
+    }
+
 }

@@ -29,9 +29,7 @@
         return {
           route: this.$route.path.replace('/',''),
           settingServices:new SettingServices(),
-          settingForm: {
-              path:''
-          },
+            projectPath: '',
             selectedOptions:[],
             options: [{
                 value: 'zhinan',
@@ -231,7 +229,11 @@
         }
       },
       mounted(){
-          this.settingForm.path = this.settingServices.getProjectPath();
+          this.projectPath = this.settingServices.getProjectPath();
+          if( !this.projectPath) {
+
+          }
+
       },
       methods:{
           saveSetting(){
