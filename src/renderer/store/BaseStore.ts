@@ -33,7 +33,7 @@ export class BaseStore {
     }
 
     public getDataStr(key: string): string {
-        return  this.getData(key).toString();
+        return  this.getData(key);
     }
 
     public getDataNumber(key: string): number {

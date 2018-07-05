@@ -230,8 +230,12 @@
       },
       mounted(){
           this.projectPath = this.settingServices.getProjectPath();
-          if( !this.projectPath) {
 
+          if( !this.projectPath ) {
+              console.log(this.$router);
+              this.$message({ type: 'warning', message: `请先到配置管理中选择项目路径！`});
+              this.$router.push('/setting-page');
+              return;
           }
 
       },

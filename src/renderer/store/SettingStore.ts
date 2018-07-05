@@ -16,8 +16,15 @@ export class SettingStore extends BaseStore{
         super.saveData(this.projectPathKey,path);
     }
 
-    getProjectPath(): string{
+    getProjectPath(): string {
         return super.getDataStr(this.projectPathKey);
+    }
+
+
+
+    /********** 获取素材项目文件路径 ********/
+    getProjectConfigFilePath(): string {
+
     }
 
 }
