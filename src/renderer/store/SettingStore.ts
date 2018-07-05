@@ -24,8 +24,13 @@ export class SettingStore extends BaseStore{
 
 
     /********** 获取素材项目文件路径 ********/
+<<<<<<< HEAD
     getProjectConfigFilePath(): ProjectConfig {
         return  new ProjectConfig(this.getProjectPath());
+=======
+    getProjectConfigFilePath(): string {
+
+>>>>>>> 08e00a4c7a24a0d17546e3d5bbc1abca902ea71d
     }
 
 }
