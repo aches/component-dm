@@ -38,8 +38,18 @@ export class SettingServices {
     }
 
     checkProjectPath(): boolean {
+        this.settingStore.getProjectConfigFilePath();
 
         return false
+    }
+
+    /**
+     * 环境监测方法
+     * 1.监测项目文件是否存在
+     * 2.实时检测进度
+     */
+    envcheck() {
+        //TODO 待实现
     }
 
 }

@@ -6,27 +6,35 @@ const path = require('path');
 export class ProjectConfig {
 
     //package.json文件路径
-    private packageJson;
+    packageJson;
 
     //README.md文件路径
-    private readMe;
+    readMe;
 
-    private tsConfig;
+    tsConfig;
     //html模板路径
-    private indexTemplate;
+    indexTemplate;
 
     //框架源码目录
-    private srcFolder;
+    srcFolder;
 
     //微件目录
-    private widgetFolder;
+    widgetFolder;
 
     //公共静态资源目录
-    private publicStaticFolder;
+    publicStaticFolder;
 
 
     constructor(basePath: string) {
-        path.join(basePath)
+
+
+        this.packageJson    = path.join(basePath, '/package.json');
+        this.readMe         = path.join(basePath, '/README.md');
+        this.tsConfig       = path.join(basePath, '/tsconfig.json');
+        this.indexTemplate  = path.join(basePath, '/index.html');
+        this.srcFolder      = path.join(basePath, '/src');
+        this.widgetFolder           = path.join(basePath, '/widget');
+        this.publicStaticFolder     = path.join(basePath, '/static');
         //basePath +
 
     }

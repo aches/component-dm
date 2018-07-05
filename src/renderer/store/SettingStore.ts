@@ -5,6 +5,7 @@
  *@Date 2018/6/28 9:36
  */
 import {BaseStore} from "./BaseStore";
+import {ProjectConfig} from "../domain/ProjectConfig";
 
 export class SettingStore extends BaseStore{
 
@@ -23,8 +24,8 @@ export class SettingStore extends BaseStore{
 
 
     /********** 获取素材项目文件路径 ********/
-    getProjectConfigFilePath(): string {
-
+    getProjectConfigFilePath(): ProjectConfig {
+        return  new ProjectConfig(this.getProjectPath());
     }
 
 }
