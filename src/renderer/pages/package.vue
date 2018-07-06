@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%;">
+  <div style="height: 100%;"  v-loading="loading" element-loading-text="拼命加载中">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <!--<span>微件列表</span>-->
@@ -22,6 +22,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {SettingServices} from "../services/SettingServices";
+  import {ProjectService} from "../services/ProjectService";
 
   export default Vue.extend ({
       name: 'setting',
@@ -29,8 +30,10 @@
         return {
           route: this.$route.path.replace('/',''),
           settingServices:new SettingServices(),
+            projectServices:new ProjectService(),
             projectPath: '',
             selectedOptions:[],
+            loading:true,
             options: [{
                 value: 'zhinan',
                 label: '指南',
@@ -228,7 +231,8 @@
             }]
         }
       },
-      mounted(){
+      async mounted(){
+          window['$vue'] = this;
           this.projectPath = this.settingServices.getProjectPath();
 
           if( !this.projectPath ) {
@@ -237,6 +241,17 @@
               this.$router.push('/setting-page');
               return;
           }
+
+          try {
+              await this.projectServices.readProjectStructure();
+          } catch (e) {
+              this.$message({ type: 'warning', message: e.message});
+          }
+          setTimeout(() =>{
+              this.loading = false;
+          },2000)
+
+          //console.log(3333)
 
 
 

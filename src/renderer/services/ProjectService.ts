@@ -1,18 +1,15 @@
 /**
  * 项目业务类
  */
-import {BaseStore} from "../store/BaseStore";
 import {SettingStore} from "../store/SettingStore";
-<<<<<<< HEAD
 import {ProjectConfig} from "../domain/ProjectConfig";
-const fsUtil = require('fs-utils');
+import {FilesUtil} from "../util/FileUtil";
+import {Widget} from "../domain/Widget";
+const path = require("path");
+const fsUtil = require("fs-utils");
 
-export class ProjectService {
-=======
-const fsUtil = require('fs-utils');
+export class ProjectService{
 
-export class ProjectService extends BaseStore{
->>>>>>> 08e00a4c7a24a0d17546e3d5bbc1abca902ea71d
 
     private settingStore:SettingStore;
 
@@ -23,18 +20,77 @@ export class ProjectService extends BaseStore{
     /**
      * 读取项目目录结构
      */
-    readProjectStructure() {
-<<<<<<< HEAD
+    async readProjectStructure() {
+
+
         const projectConfig:ProjectConfig = this.settingStore.getProjectConfigFilePath()
-        if( !fsUtil.isEmptyFile(projectConfig.packageJson)){
+        const isExist = await FilesUtil.syncExistFolder(projectConfig.packageJson)
+        console.log(isExist)
+        if(!isExist){
             throw new Error('package.json文件不存在,请检查文件!');
         }
 
+        await this.readFolder(projectConfig.widgetFolder);
         //读取文件目录
-=======
-        const projectPath = this.settingStore.getProjectPath();
-        if( fsUtil.isEmptyDir())
+        //学科目录
+    }
 
->>>>>>> 08e00a4c7a24a0d17546e3d5bbc1abca902ea71d
+
+    async iteraFolder(folderPath: string){
+        const categoryArry = await FilesUtil.readdir(folderPath) as Array<string>;
+        if(this.isWidget(categoryArry)) {
+            const widget = this.convertWidget(folderPath,'','');
+            return;
+        }
+
+
+    }
+
+    async readFolder(folderPath: string){
+        const categoryArry = await FilesUtil.readdir(folderPath) as Array<string>;
+
+        for (let i = 0; i < categoryArry.length; i++) {
+            //学科全路径
+            const categoryFolder = path.join(folderPath, categoryArry[i]);
+            console.log(categoryFolder);
+
+            //学科下对应期号
+            const numArray = await FilesUtil.readdir(categoryFolder) as Array<string>;
+            //console.log(numArray);
+            //是否是微件
+            if(this.isWidget(numArray)) {
+                this.convertWidget(categoryArry[i], folderPath,'','');
+                continue;
+            }
+            this.readFolder(path.join(folderPath,))
+        }
+        console.log(categoryArry);
+    }
+
+    isWidget(path:Array<string>) {
+        //if(path.indexOf('meta.json') > -1 || path.indexOf('meta.json') > -1 )
+        return path.indexOf('meta.json') > -1 || path.indexOf('main.ts') > -1 || path.indexOf('main.vue') > -1;
+    }
+
+    /**
+     * 转换为微件对象
+     */
+    convertWidget(widgetPath: string,no: string, category: string) {
+        //fsUtil
+        const metaPath = path.join(widgetPath, 'meta.json');
+        if(!FilesUtil.syncExistFolder(metaPath)) {
+            return null;
+        }
+        //path.join(widgetBasePath, widgetName, 'meta.json')
+        const metaObj = fsUtil.readJSONSync(metaPath)
+        console.log(metaObj);
+        const widget    = new Widget();
+        widget.alias    = widgetName;
+        widget.author   = metaObj.author;
+        widget.title    = metaObj.title;
+        widget.path     = path.join(widgetBasePath, widgetName);
+        widget.no       = no;
+        widget.category = category;
+
     }
 }
