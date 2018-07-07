@@ -13,6 +13,8 @@ export class ProjectService{
 
     private settingStore:SettingStore;
 
+    private project = new Array<object>();
+
     constructor() {
         this.settingStore = new SettingStore();
     }
@@ -30,7 +32,10 @@ export class ProjectService{
             throw new Error('package.json文件不存在,请检查文件!');
         }
 
-        await this.readFolder(projectConfig.widgetFolder);
+        //await this.readFolder(projectConfig.widgetFolder);
+        //console.log(projectConfig.widgetFolder);
+        await this.iteraFolder(projectConfig.widgetFolder);
+        //console.log(this.project);
         //读取文件目录
         //学科目录
     }
@@ -38,9 +43,22 @@ export class ProjectService{
 
     async iteraFolder(folderPath: string){
         const categoryArry = await FilesUtil.readdir(folderPath) as Array<string>;
+        //读取微件信息
         if(this.isWidget(categoryArry)) {
             const widget = this.convertWidget(folderPath,'','');
+            this.project.push(widget);
+            //console.log(widget);
             return;
+        }
+
+        //循环迭代微件文件夹
+        for(let i = 0; i < categoryArry.length; i++) {
+            const childPath = path.join(folderPath, categoryArry[i]);
+            if(!fsUtil.isDir(childPath)){
+                continue;
+            }
+            //console.info('childPath', childPath);
+            await this.iteraFolder(childPath )
         }
 
 
@@ -59,7 +77,7 @@ export class ProjectService{
             //console.log(numArray);
             //是否是微件
             if(this.isWidget(numArray)) {
-                this.convertWidget(categoryArry[i], folderPath,'','');
+                //this.convertWidget(categoryArry[i], folderPath,'','');
                 continue;
             }
             this.readFolder(path.join(folderPath,))
@@ -81,16 +99,25 @@ export class ProjectService{
         if(!FilesUtil.syncExistFolder(metaPath)) {
             return null;
         }
+
+        const widgetPathArray = widgetPath.split(path.sep);
         //path.join(widgetBasePath, widgetName, 'meta.json')
         const metaObj = fsUtil.readJSONSync(metaPath)
         console.log(metaObj);
         const widget    = new Widget();
-        widget.alias    = widgetName;
+        widget.alias    = widgetPathArray[widgetPathArray.length-1];
+        //"D:", "project", "huohua_component", "widget", "biology", "r12_jytbqs"
+        console.log(widgetPathArray)
+        console.log(widgetPathArray.indexOf('widget'));
         widget.author   = metaObj.author;
         widget.title    = metaObj.title;
-        widget.path     = path.join(widgetBasePath, widgetName);
-        widget.no       = no;
-        widget.category = category;
+        widget.path     = widgetPath;
+        /*if((widgetPathArray.length - 1 ) > widgetPathArray.indexOf('widget') + 2) {
+
+        }*/
+        widget.no       = widgetPathArray[widgetPathArray.length-2];
+        widget.category = widgetPathArray[widgetPathArray.length-3];
+        return widget;
 
     }
 }
