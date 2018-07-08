@@ -11,14 +11,23 @@ export class SettingStore extends BaseStore{
 
     //项目路径
     projectPathKey:string = 'projectPath';
+    outputPathKey:string = 'outputPath';
 
 
-    saveProjectPath(path: string): void{
+    saveProjectPath(path: string): void {
         super.saveData(this.projectPathKey,path);
+    }
+
+    saveOutPutPath(output: string): void {
+        super.saveData(this.outputPathKey,output);
     }
 
     getProjectPath(): string {
         return super.getDataStr(this.projectPathKey);
+    }
+
+    getOutputPath(): string{
+        return super.getDataStr(this.outputPathKey);
     }
 
 

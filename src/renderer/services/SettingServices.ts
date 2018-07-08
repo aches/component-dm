@@ -43,6 +43,15 @@ export class SettingServices {
         return false
     }
 
+    saveOutPutPath(output: string): void {
+        this.settingStore.saveOutPutPath(output);
+    }
+
+
+    getOutputPath(): string{
+        return this.settingStore.getOutputPath();
+    }
+
     /**
      * 环境监测方法
      * 1.监测项目文件是否存在

@@ -5,6 +5,7 @@ import {SettingStore} from "../store/SettingStore";
 import {ProjectConfig} from "../domain/ProjectConfig";
 import {FilesUtil} from "../util/FileUtil";
 import {Widget} from "../domain/Widget";
+import {CommandUtil} from "../util/CommandUtil";
 const path = require("path");
 const fsUtil = require("fs-utils");
 
@@ -64,26 +65,6 @@ export class ProjectService{
 
     }
 
-    async readFolder(folderPath: string){
-        const categoryArry = await FilesUtil.readdir(folderPath) as Array<string>;
-
-        for (let i = 0; i < categoryArry.length; i++) {
-            //学科全路径
-            const categoryFolder = path.join(folderPath, categoryArry[i]);
-            console.log(categoryFolder);
-
-            //学科下对应期号
-            const numArray = await FilesUtil.readdir(categoryFolder) as Array<string>;
-            //console.log(numArray);
-            //是否是微件
-            if(this.isWidget(numArray)) {
-                //this.convertWidget(categoryArry[i], folderPath,'','');
-                continue;
-            }
-            this.readFolder(path.join(folderPath,))
-        }
-        console.log(categoryArry);
-    }
 
     isWidget(path:Array<string>) {
         //if(path.indexOf('meta.json') > -1 || path.indexOf('meta.json') > -1 )
@@ -103,12 +84,12 @@ export class ProjectService{
         const widgetPathArray = widgetPath.split(path.sep);
         //path.join(widgetBasePath, widgetName, 'meta.json')
         const metaObj = fsUtil.readJSONSync(metaPath)
-        console.log(metaObj);
+        //console.log(metaObj);
         const widget    = new Widget();
         widget.alias    = widgetPathArray[widgetPathArray.length-1];
         //"D:", "project", "huohua_component", "widget", "biology", "r12_jytbqs"
-        console.log(widgetPathArray)
-        console.log(widgetPathArray.indexOf('widget'));
+        //console.log(widgetPathArray)
+        //console.log(widgetPathArray.indexOf('widget'));
         widget.author   = metaObj.author;
         widget.title    = metaObj.title;
         widget.path     = widgetPath;
@@ -118,6 +99,38 @@ export class ProjectService{
         widget.no       = widgetPathArray[widgetPathArray.length-2];
         widget.category = widgetPathArray[widgetPathArray.length-3];
         return widget;
+
+    }
+
+
+    async doPackage(widgetArray:Array<any>){
+        const workspace = this.settingStore.getProjectPath();
+        const outputPath = this.settingStore.getOutputPath();
+
+        for(let i = 0 ;i < widgetArray.length;i++) {
+            widgetArray[i].status = 'loading';
+            const widget = widgetArray[i];
+            const temp = widget.path.split(path.sep);
+            temp.pop();
+            const widgetIndex = temp.indexOf('widget');
+            for(let j = 0 ; j < widgetIndex;j++){
+                temp.shift();
+            }
+            const folder = temp.join(path.sep);
+            const target = widget.alias;
+            const result = await CommandUtil.execPackageCmd(workspace,outputPath, folder, target,
+                (data)=>{
+                    window['$vue'].processContent += data ;
+                },
+                (error)=>{
+                    window['$vue'].processContent += error ;
+                } );
+            console.info(widget.alias,result);
+            if(result) {
+
+            }
+            widgetArray[i].status = result ? 'success' : 'error';
+        }
 
     }
 }

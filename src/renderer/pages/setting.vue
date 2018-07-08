@@ -5,6 +5,10 @@
         <el-input v-model="settingForm.path" style="width: 350px;"></el-input>
         <el-button  @click="settingForm.path = settingServices.showWindowDialog()">选择路径</el-button>
       </el-form-item>
+      <el-form-item label="打包路径" >
+        <el-input v-model="settingForm.output" style="width: 350px;"></el-input>
+        <el-button  @click="settingForm.output = settingServices.showWindowDialog()">选择路径</el-button>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="saveSetting">保存</el-button>
       </el-form-item>
@@ -24,12 +28,14 @@
           route: this.$route.path.replace('/',''),
           settingServices:new SettingServices(),
           settingForm: {
-              path:''
+              path:'',
+              output:''
           }
         }
       },
       mounted(){
           this.settingForm.path = this.settingServices.getProjectPath();
+          this.settingForm.output = this.settingServices.getOutputPath();
       },
       methods:{
           saveSetting(){
@@ -39,6 +45,7 @@
                   callback: action => {
                       if(action === 'confirm'){
                            this.settingServices.saveProjectPath(this.settingForm.path);
+                           this.settingServices.saveOutPutPath(this.settingForm.output);
                            this.$message({ type: 'success', message: `保存成功`});
                       }
                   }

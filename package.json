@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "copy-dir": "^0.3.0",
     "element-ui": "^2.3.4",
     "fs-utils": "^0.7.0",
     "sequelize": "^4.37.6",

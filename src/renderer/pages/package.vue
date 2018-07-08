@@ -2,13 +2,7 @@
   <div style="height: 100%;"  v-loading="loading" element-loading-text="拼命加载中">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <!--<span>微件列表</span>-->
-        <!--<el-cascader
-                :options="options"
-                v-model="selectedOptions"
-                @change="handleChange">
-        </el-cascader>-->
-       <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
+        <el-button type="primary"  @click="doPackage()">打包</el-button>
       </div>
       <div>
         <el-table
@@ -49,6 +43,41 @@
       </div>-->
     </el-card>
 
+
+    <!--打包弹窗-->
+    <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="80%"
+            height="80%"
+            :before-close="handleClose">
+      <el-card class="box-card">
+        <div   class="text item">
+          <el-row>
+            <el-col :span="6" class="">
+              <div class="title-nav-wrap">
+                  <div v-for="widget in multipleSelection" class="title">{{widget.title}}
+                    <i v-if="widget.status == 'success' " class="el-icon-success"></i>
+                    <i v-if="widget.status == 'error' " class="el-icon-error"></i>
+                    <i v-if="widget.status == 'loading' " class="el-icon-loading"></i>
+                  </div>
+                  <!--<div class="title">乙烷的旋转异构体 <i class="el-icon-error"></i></div>
+                  <div class="title">乙烷的旋转异构体 <i class="el-icon-loading"></i></div>-->
+
+
+
+              </div>
+            </el-col>
+            <el-col :span="16" class="content-wrap"><pre>{{processContent}}</pre></el-col>
+          </el-row>
+        </div>
+      </el-card>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" :loading="isPacking" @click="confirmPackage">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -56,6 +85,7 @@
   import Vue from 'vue';
   import {SettingServices} from "../services/SettingServices";
   import {ProjectService} from "../services/ProjectService";
+  import {CommandUtil} from "../util/CommandUtil";
 
   export default Vue.extend ({
       name: 'setting',
@@ -67,7 +97,11 @@
             projectPath: '',
             selectedOptions:[],
             loading:true,
-            projectList: []
+            isPacking:false,
+            projectList: [],
+            multipleSelection:[],
+            dialogVisible: false,
+            processContent:''
 
         }
       },
@@ -86,14 +120,11 @@
               console.time('readProject');
               await this.projectServices.readProjectStructure();
               console.timeEnd('readProject');
-              console.log(this.projectServices.project);
               this.projectList = this.projectServices.project;
           } catch (e) {
               this.$message({ type: 'warning', message: e.message});
           }
-          setTimeout(() =>{
-              this.loading = false;
-          },2000)
+          this.loading = false;
 
           //console.log(3333)
 
@@ -101,28 +132,59 @@
 
       },
       methods:{
-          handleSelectionChange() {
-
-          },
-          saveSetting(){
-              this.$alert('确认选择项目路径?', '提示', {
+          doPackage() {
+              /*this.$alert('确认选择项目路径?', '提示', {
                   confirmButtonText: '确定',
                   type: 'warning',
                   callback: action => {
                       if(action === 'confirm'){
-                           this.settingServices.saveProjectPath(this.settingForm.path);
-                           this.$message({ type: 'success', message: `保存成功`});
+                          this.settingServices.saveProjectPath(this.settingForm.path);
+                          this.$message({ type: 'success', message: `保存成功`});
                       }
                   }
-              });
+              });*/
+
+            this.dialogVisible = true;
+
+
+            //CommandUtil.execPackageCmd(this.settingServices.getProjectPath());
           },
-          handleChange(value) {
-              console.log(value);
+          confirmPackage(){
+            this.isPacking = true;
+            this.projectServices.doPackage(this.multipleSelection);
+          },
+          handleSelectionChange(val) {
+                  val.status = 'wait';
+                  this.multipleSelection = val;
+          },
+          handleClose(done) {
+              this.$confirm('确认关闭？')
+                  .then(_ => {
+                      this.isPacking = false;
+                      this.processContent = '';
+                      done();
+                  })
+                  .catch(_ => {});
           }
       }
   });
 </script>
 
 <style scoped>
+  .title-nav-wrap {
+    border-right: 2px solid #e4e7ed;
+  }
+  .title-nav-wrap .title{
+    margin-bottom: 20px;
+  }
+  .title-nav-wrap i {
+    margin-top: 7px;
+    margin-right: 14px;
+    float: right;
+
+  }
+  .content-wrap {
+    padding-left: 15px;
+  }
 
 </style>
