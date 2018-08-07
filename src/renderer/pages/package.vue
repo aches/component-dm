@@ -4,16 +4,16 @@
       <div slot="header" class="clearfix" >
         <el-button type="primary"  @click="doPackage()">打包</el-button>
 
-        <el-select v-model="value" placeholder="请选择期号">
+    <!--   <el-select v-model="selectNo" multiple  placeholder="请选择期号">
           <el-option
-                  v-for="item in options"
+                  v-for="item in allNums"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
           </el-option>
         </el-select>
 
-        <el-select v-model="value" placeholder="请选择学科">
+        <el-select v-model="selectSubject" multiple  placeholder="请选择学科">
           <el-option
                   v-for="item in subjects"
                   :key="item.value"
@@ -21,7 +21,7 @@
                   :value="item.value">
           </el-option>
         </el-select>
-
+-->
 
 
       </div>
@@ -31,21 +31,32 @@
                 :data="projectList"
                 tooltip-effect="dark"
                 style="width: 100%"
+                :default-sort = "{prop: 'no', order: 'descending'}"
                 @selection-change="handleSelectionChange">
           <el-table-column
                   type="selection"
                   width="55">
           </el-table-column>
           <el-table-column
+                  prop="no"
+                  :filters="allNums"
+
+
                   label="期号"
-                  sortable="true"
+                  sortable
                   width="120">
-            <template slot-scope="scope">{{ scope.row.no }}</template>
+            <!--<template slot-scope="scope">{{ scope.row.no }}</template>-->
           </el-table-column>
           <el-table-column
                   prop="category"
+                  sortable
                   label="学科"
-                  width="120">
+                  width="120"
+                  filter-multiple
+                  :filters="[{ value: 'math',text: '数学'}, {value: 'geography',text: '地理'}, {value: 'physics',text: '物理'}, {value: 'chemistry',text: '化学'}, {value: 'biology',text: '生物'}]"
+                  :filtered-value="filterSubject"
+                  :filter-method="filterHandler"
+                 >
           </el-table-column>
           <el-table-column
                   prop="title"
@@ -125,21 +136,26 @@
             dialogVisible: false,
             processContent:'',
 
+            selectSubject:[],
+            selectNo:[],
+            allNums:[],
+
+            filterSubject:['math'],
             subjects: [{
                 value: 'math',
-                label: '数学'
+                text: '数学'
             }, {
                 value: 'geography',
-                label: '地理'
+                text: '地理'
             }, {
                 value: 'physics',
-                label: '物理'
+                text: '物理'
             }, {
                 value: 'chemistry',
-                label: '化学'
+                text: '化学'
             }, {
                 value: 'biology',
-                label: '生物'
+                text: '生物'
             }]
 
         }
@@ -160,6 +176,13 @@
               await this.projectServices.readProjectStructure();
               console.timeEnd('readProject');
               this.projectList = this.projectServices.project;
+              for(let i = 0 ;i < this.projectServices.nums.length;i++) {
+                  this.allNums.push({
+                      text:this.projectServices.nums[i],
+                      value:this.projectServices.nums[i]
+                  })
+              }
+              console.log(this.projectServices.nums);
           } catch (e) {
               this.$message({ type: 'warning', message: e.message});
           }
@@ -172,21 +195,7 @@
       },
       methods:{
           doPackage() {
-              /*this.$alert('确认选择项目路径?', '提示', {
-                  confirmButtonText: '确定',
-                  type: 'warning',
-                  callback: action => {
-                      if(action === 'confirm'){
-                          this.settingServices.saveProjectPath(this.settingForm.path);
-                          this.$message({ type: 'success', message: `保存成功`});
-                      }
-                  }
-              });*/
-
             this.dialogVisible = true;
-
-
-            //CommandUtil.execPackageCmd(this.settingServices.getProjectPath());
           },
           confirmPackage(){
             this.isPacking = true;
@@ -204,6 +213,25 @@
                       done();
                   })
                   .catch(_ => {});
+          },
+          filterHandler(value, row, column) {
+              console.log(value);
+              console.log(row);
+              console.log(column);
+              const property = column['property'];
+              //return row[property] === value;
+              return row.category == value;
+          },
+          numFilterChange(sort ) {
+            console.log(sort);
+          }
+      },
+      watch:{
+          selectNo: function(val){
+
+          },
+          selectSubject: function(val){
+
           }
       }
   });

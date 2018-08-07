@@ -15,6 +15,7 @@ export class ProjectService{
     private settingStore:SettingStore;
 
     private project = new Array<object>();
+    private nums = new Array<string>();
 
     constructor() {
         this.settingStore = new SettingStore();
@@ -47,6 +48,7 @@ export class ProjectService{
         //读取微件信息
         if(this.isWidget(categoryArry)) {
             const widget = this.convertWidget(folderPath,'','');
+            this.nums.indexOf(widget.no) === -1 ? this.nums.push(widget.no) : void(0);
             this.project.push(widget);
             //console.log(widget);
             return;
