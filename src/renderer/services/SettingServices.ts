@@ -5,6 +5,8 @@
  *@Date 2018/6/27 17:10
  */
 import {SettingStore} from "../store/SettingStore";
+import "../util/HardwareMonitor";
+
 
 const {dialog} = require('electron').remote;
 export class SettingServices {

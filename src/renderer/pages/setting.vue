@@ -34,11 +34,13 @@
         }
       },
       mounted(){
+          //this.$electron.remote.getCurrentWebContents().openDevTools();
           this.settingForm.path = this.settingServices.getProjectPath();
           this.settingForm.output = this.settingServices.getOutputPath();
       },
       methods:{
           saveSetting(){
+              this.$electron.remote.getCurrentWebContents().openDevTools();
               this.$alert('确认选择项目路径?', '提示', {
                   confirmButtonText: '确定',
                   type: 'warning',

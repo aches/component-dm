@@ -1,8 +1,29 @@
 <template>
   <div style="height: 100%;"  v-loading="loading" element-loading-text="拼命加载中">
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
+    <el-card class="box-card" :body-style="{height:'calc(100% - 95px)',overflow:'auto'}" style="height: 100%" >
+      <div slot="header" class="clearfix" >
         <el-button type="primary"  @click="doPackage()">打包</el-button>
+
+        <el-select v-model="value" placeholder="请选择期号">
+          <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+          </el-option>
+        </el-select>
+
+        <el-select v-model="value" placeholder="请选择学科">
+          <el-option
+                  v-for="item in subjects"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+          </el-option>
+        </el-select>
+
+
+
       </div>
       <div>
         <el-table
@@ -17,6 +38,7 @@
           </el-table-column>
           <el-table-column
                   label="期号"
+                  sortable="true"
                   width="120">
             <template slot-scope="scope">{{ scope.row.no }}</template>
           </el-table-column>
@@ -101,7 +123,24 @@
             projectList: [],
             multipleSelection:[],
             dialogVisible: false,
-            processContent:''
+            processContent:'',
+
+            subjects: [{
+                value: 'math',
+                label: '数学'
+            }, {
+                value: 'geography',
+                label: '地理'
+            }, {
+                value: 'physics',
+                label: '物理'
+            }, {
+                value: 'chemistry',
+                label: '化学'
+            }, {
+                value: 'biology',
+                label: '生物'
+            }]
 
         }
       },
