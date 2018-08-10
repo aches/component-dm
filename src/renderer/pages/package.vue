@@ -40,8 +40,7 @@
           <el-table-column
                   prop="no"
                   :filters="allNums"
-
-
+                  :filter-method="filterHandler"
                   label="期号"
                   sortable
                   width="120">
@@ -54,7 +53,6 @@
                   width="120"
                   filter-multiple
                   :filters="[{ value: 'math',text: '数学'}, {value: 'geography',text: '地理'}, {value: 'physics',text: '物理'}, {value: 'chemistry',text: '化学'}, {value: 'biology',text: '生物'}]"
-                  :filtered-value="filterSubject"
                   :filter-method="filterHandler"
                  >
           </el-table-column>
@@ -219,8 +217,8 @@
               console.log(row);
               console.log(column);
               const property = column['property'];
-              //return row[property] === value;
-              return row.category == value;
+              return row[property] === value;
+              //return row.category == value;
           },
           numFilterChange(sort ) {
             console.log(sort);
