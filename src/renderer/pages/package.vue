@@ -114,7 +114,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {SettingServices} from "../services/SettingServices";
+  import {SettingService} from "../services/SettingService";
   import {ProjectService} from "../services/ProjectService";
   import {CommandUtil} from "../util/CommandUtil";
 
@@ -123,7 +123,7 @@
       data() {
         return {
           route: this.$route.path.replace('/',''),
-          settingServices:new SettingServices(),
+          settingServices:new SettingService(),
             projectServices:new ProjectService(),
             projectPath: '',
             selectedOptions:[],

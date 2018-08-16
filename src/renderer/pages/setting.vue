@@ -19,14 +19,14 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {SettingServices} from "../services/SettingServices";
+  import {SettingService} from "../services/SettingService";
 
   export default Vue.extend ({
       name: 'setting',
       data() {
         return {
           route: this.$route.path.replace('/',''),
-          settingServices:new SettingServices(),
+          settingServices:new SettingService(),
           settingForm: {
               path:'',
               output:''

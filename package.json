@@ -1,6 +1,6 @@
 {
   "name": "huohua-component-desktop-manager",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "electron-vue",
   "description": "An electron-vue project",
   "license": null,
@@ -56,9 +56,13 @@
   "dependencies": {
     "axios": "^0.16.1",
     "copy-dir": "^0.3.0",
+    "decompress": "^4.2.0",
     "element-ui": "^2.3.4",
     "fs-utils": "^0.7.0",
+    "gpu-info": "0.0.1",
+    "hardware-detector": "0.0.2",
     "sequelize": "^4.37.6",
+    "systeminformation": "^3.42.4",
     "ts-loader": "^3.5.0",
     "typescript": "^2.8.1",
     "vue": "^2.3.3",

@@ -12,6 +12,10 @@
             <i class="el-icon-menu"></i>
             <span slot="title" slot-scope="title">微件打包</span>
           </el-menu-item>
+          <el-menu-item index="3d-page">
+            <i class="el-icon-menu"></i>
+            <span slot="title" slot-scope="title">集成3D</span>
+          </el-menu-item>
      <!--     <el-menu-item index="update-page">
             <i class="el-icon-menu"></i>
             <span slot="title" slot-scope="title">导航二</span>

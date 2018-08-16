@@ -9,7 +9,7 @@ import "../util/HardwareMonitor";
 
 
 const {dialog} = require('electron').remote;
-export class SettingServices {
+export class SettingService {
 
     private settingStore: SettingStore;
 

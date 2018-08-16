@@ -12,6 +12,7 @@ import updateVue from '../pages/update.vue';
 import addVue    from '../pages/add.vue';
 import settingVue    from '../pages/setting.vue';
 import packageVue    from '../pages/package.vue';
+import playcanvasVue    from '../pages/playcanvas.vue';
 
 Vue.use(Router)
 
@@ -45,6 +46,12 @@ const router = new Router({
                     name: 'summary.add',
                     alias: '',
                     component:  addVue,
+                },
+                {
+                    path: '/3d-page',
+                    name: '3d.add',
+                    alias: '',
+                    component:  playcanvasVue,
                 },
 
             ]
