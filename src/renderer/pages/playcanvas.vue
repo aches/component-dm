@@ -16,7 +16,8 @@
               drag
               :on-change="handleChange"
               :auto-upload="false"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              style="text-align: center"
+              action="#"
              >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -70,6 +71,12 @@
              // this.file
               //const outpath = this.settingServices.getOutputPath();
               this.d3Services.playcanvsStructure(this.file);
+
+              setTimeout(() => {
+                  this.loading = false;
+                  this.$message({ type: 'success', message: `集成成功`});
+              },2000);
+
           },
       },
       watch:{

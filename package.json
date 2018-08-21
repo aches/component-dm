@@ -54,6 +54,7 @@
     }
   },
   "dependencies": {
+    "art-template": "^4.12.2",
     "axios": "^0.16.1",
     "copy-dir": "^0.3.0",
     "decompress": "^4.2.0",
