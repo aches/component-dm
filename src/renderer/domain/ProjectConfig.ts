@@ -21,6 +21,9 @@ export class ProjectConfig {
     //微件目录
     widgetFolder;
 
+    //识微微件项目
+    widgetSWFolder;
+
     //公共静态资源目录
     publicStaticFolder;
 
@@ -34,6 +37,7 @@ export class ProjectConfig {
         this.indexTemplate  = path.join(basePath, '/index.html');
         this.srcFolder      = path.join(basePath, '/src');
         this.widgetFolder           = path.join(basePath, '/widget');
+        this.widgetSWFolder           = path.join(basePath, '/widget_sw');
         this.publicStaticFolder     = path.join(basePath, '/static');
         //basePath +
 

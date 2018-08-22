@@ -37,6 +37,8 @@ export class ProjectService{
         //await this.readFolder(projectConfig.widgetFolder);
         //console.log(projectConfig.widgetFolder);
         await this.iteraFolder(projectConfig.widgetFolder);
+
+        await this.iteraFolder(projectConfig.widgetSWFolder);
         //console.log(this.project);
         //读取文件目录
         //学科目录
