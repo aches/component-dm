@@ -1,5 +1,7 @@
 <template>
   <div style="height: 100%;"  v-loading="loading" element-loading-text="拼命加载中">
+
+
     <el-card class="box-card" :body-style="{height:'calc(100% - 95px)',overflow:'auto'}" style="height: 100%" >
       <div slot="header" class="clearfix" >
         <el-button type="primary"  @click="doPackage()">打包</el-button>
@@ -76,17 +78,18 @@
 
 
     <!--打包弹窗-->
-    <el-dialog
+    <!--<el-dialog
             title="提示"
             :visible.sync="dialogVisible"
             width="80%"
-            height="80%"
-            :before-close="handleClose">
-      <el-card class="box-card">
-        <div   class="text item">
-          <el-row>
-            <el-col :span="6" class="">
-              <div class="title-nav-wrap">
+            style="height:80%"
+            :before-close="handleClose">-->
+    <div style="position: absolute;z-index: 2;left: 0;top: 0;width: 100%;height: 100%;padding: 20px; box-sizing: border-box;">
+      <el-card class="box-card" style="height:80%">
+        <div   class="text item" style="height:100%">
+          <el-row style="height:100%">
+            <el-col :span="6" class="" style="height:100%">
+              <div class="title-nav-wrap"  style="height:500px;overflow-y: auto">
                   <div v-for="widget in multipleSelection" class="title">{{widget.title}}
                     <i v-if="widget.status == 'success' " class="el-icon-success"></i>
                     <i v-if="widget.status == 'error' " class="el-icon-error"></i>
@@ -99,15 +102,20 @@
 
               </div>
             </el-col>
-            <el-col :span="16" class="content-wrap"><pre>{{processContent}}</pre></el-col>
+            <el-col :span="16" class="content-wrap">
+              <div id="termDiv" style="position: relative;bottom: 0;right: 0;z-index: 99;width: 100%;height: 100%"> </div>
+            </el-col>
           </el-row>
+
+
         </div>
       </el-card>
-      <span slot="footer" class="dialog-footer">
+      <div style="height: 20%;">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" :loading="isPacking" @click="confirmPackage">确 定</el-button>
-      </span>
-    </el-dialog>
+      </div>
+    </div>
+    <!--</el-dialog>-->
 
   </div>
 </template>
@@ -116,6 +124,8 @@
   import Vue from 'vue';
   import {SettingService} from "../services/SettingService";
   import {ProjectService} from "../services/ProjectService";
+  import 'xterm/dist/xterm.css';
+  import { Terminal } from 'xterm';
   import {CommandUtil} from "../util/CommandUtil";
 
   export default Vue.extend ({
@@ -133,6 +143,7 @@
             multipleSelection:[],
             dialogVisible: false,
             processContent:'',
+            term:null,
 
             selectSubject:[],
             selectNo:[],
@@ -159,6 +170,10 @@
         }
       },
       async mounted(){
+
+
+          //this.term.write('Hello from \n\raaa ')
+
           window['$vue'] = this;
           this.projectPath = this.settingServices.getProjectPath();
 
@@ -181,6 +196,11 @@
                   })
               }
               console.log(this.projectServices.nums);
+
+
+
+
+
           } catch (e) {
               this.$message({ type: 'warning', message: e.message});
           }
@@ -194,10 +214,18 @@
       methods:{
           doPackage() {
             this.dialogVisible = true;
+              setTimeout(() =>{
+                  if(this.term){
+                      return;
+                  }
+                  this.term = new Terminal();
+                  console.log(this.term);
+                  this.term.open(document.getElementById('termDiv'));
+              }, 1000)
           },
           confirmPackage(){
             this.isPacking = true;
-            this.projectServices.doPackage(this.multipleSelection);
+            this.projectServices.doPackage(this.multipleSelection, this.term);
           },
           handleSelectionChange(val) {
                   val.status = 'wait';

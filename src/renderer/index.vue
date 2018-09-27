@@ -16,6 +16,10 @@
             <i class="el-icon-menu"></i>
             <span slot="title" slot-scope="title">集成3D</span>
           </el-menu-item>
+          <el-menu-item index="gui-editor">
+            <i class="el-icon-menu"></i>
+            <span slot="title" slot-scope="title">页面构建</span>
+          </el-menu-item>
      <!--     <el-menu-item index="update-page">
             <i class="el-icon-menu"></i>
             <span slot="title" slot-scope="title">导航二</span>

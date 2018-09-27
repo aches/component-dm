@@ -13,6 +13,7 @@ import addVue    from '../pages/add.vue';
 import settingVue    from '../pages/setting.vue';
 import packageVue    from '../pages/package.vue';
 import playcanvasVue    from '../pages/playcanvas.vue';
+import editorVue    from '../pages/gui/editor.vue';
 
 Vue.use(Router)
 
@@ -53,6 +54,12 @@ const router = new Router({
                     alias: '',
                     component:  playcanvasVue,
                 },
+                {
+                    path: '/gui-editor',
+                    name: 'gui.editor',
+                    alias: '',
+                    component:  editorVue,
+                }
 
             ]
         },

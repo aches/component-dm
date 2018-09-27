@@ -107,7 +107,7 @@ export class ProjectService{
     }
 
 
-    async doPackage(widgetArray:Array<any>){
+    async doPackage(widgetArray:Array<any>, term:any){
         const workspace = this.settingStore.getProjectPath();
         const outputPath = this.settingStore.getOutputPath();
 
@@ -125,6 +125,9 @@ export class ProjectService{
             const result = await CommandUtil.execPackageCmd(workspace,outputPath, folder, target,
                 (data)=>{
                     window['$vue'].processContent += data ;
+                    console.log(data.toString())
+                    const temp = data.toString().replace(/\n/g,'\r\n');
+                    term.writeln(temp);
                 },
                 (error)=>{
                     window['$vue'].processContent += error ;
