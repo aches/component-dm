@@ -84,12 +84,18 @@
             width="80%"
             style="height:80%"
             :before-close="handleClose">-->
-    <div style="position: absolute;z-index: 2;left: 0;top: 0;width: 100%;height: 100%;padding: 20px; box-sizing: border-box;">
-      <el-card class="box-card" style="height:80%">
+    <div style="position: absolute;z-index: 2;left: 0;top: 0;width: 100%;height: 100%;padding: 20px; box-sizing: border-box;"
+         v-show="dialogVisible">
+      <el-card class="box-card" style="height:100%" :body-style="{ height: '85%' }">
+        <div slot="header" class="clearfix">
+          <span>微件打包</span>
+          <el-button style="float: right; " @click="dialogVisible = false" size="mini">取 消</el-button>
+          <el-button style="float: right; margin-right: 30px;" type="primary" :loading="isPacking" @click="confirmPackage" size="mini">开 始</el-button>
+        </div>
         <div   class="text item" style="height:100%">
           <el-row style="height:100%">
             <el-col :span="6" class="" style="height:100%">
-              <div class="title-nav-wrap"  style="height:500px;overflow-y: auto">
+              <div class="title-nav-wrap"  style="height:100%;overflow-y: auto">
                   <div v-for="widget in multipleSelection" class="title">{{widget.title}}
                     <i v-if="widget.status == 'success' " class="el-icon-success"></i>
                     <i v-if="widget.status == 'error' " class="el-icon-error"></i>
@@ -102,18 +108,18 @@
 
               </div>
             </el-col>
-            <el-col :span="16" class="content-wrap">
-              <div id="termDiv" style="position: relative;bottom: 0;right: 0;z-index: 99;width: 100%;height: 100%"> </div>
+            <el-col :span="18" class="content-wrap" style="height: 100%;">
+              <div id="termDiv" style="position: relative;bottom: 0;right: 0;z-index: 99;width: 1000px;height: 100%"> </div>
             </el-col>
           </el-row>
 
 
         </div>
       </el-card>
-      <div style="height: 20%;">
+    <!--  <div style="height: 20%;">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" :loading="isPacking" @click="confirmPackage">确 定</el-button>
-      </div>
+      </div>-->
     </div>
     <!--</el-dialog>-->
 
@@ -218,9 +224,14 @@
                   if(this.term){
                       return;
                   }
-                  this.term = new Terminal();
+                  const options = {
+                      cols : 120
+                  };
+                  this.term = new Terminal(options);
                   console.log(this.term);
                   this.term.open(document.getElementById('termDiv'));
+                  //this.term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ')
+
               }, 1000)
           },
           confirmPackage(){
