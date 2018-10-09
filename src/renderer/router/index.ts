@@ -14,6 +14,7 @@ import settingVue    from '../pages/setting.vue';
 import packageVue    from '../pages/package.vue';
 import playcanvasVue    from '../pages/playcanvas.vue';
 import editorVue    from '../pages/gui/editor.vue';
+import testVue    from '../pages/test/test.vue';
 
 Vue.use(Router)
 
@@ -59,6 +60,12 @@ const router = new Router({
                     name: 'gui.editor',
                     alias: '',
                     component:  editorVue,
+                },
+                {
+                    path: '/test-page',
+                    name: 'test.test',
+                    alias: '',
+                    component:  testVue,
                 }
 
             ]

@@ -20,6 +20,11 @@
             <i class="el-icon-menu"></i>
             <span slot="title" slot-scope="title">页面构建</span>
           </el-menu-item>
+          <el-menu-item index="test-page">
+            <i class="el-icon-menu"></i>
+            <span slot="title" slot-scope="title">微件测试</span>
+          </el-menu-item>
+
      <!--     <el-menu-item index="update-page">
             <i class="el-icon-menu"></i>
             <span slot="title" slot-scope="title">导航二</span>
