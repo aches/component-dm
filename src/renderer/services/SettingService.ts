@@ -30,6 +30,15 @@ export class SettingService {
         return projectPaths && projectPaths.length > 0 ? projectPaths[0] : '';
     }
 
+    /**
+     * 弹出选择文件窗口
+     * @returns {string}
+     */
+    showOpenFile(): string {
+        const projectPaths = dialog.showOpenDialog({properties: ['openFile']});
+        return projectPaths && projectPaths.length > 0 ? projectPaths[0] : '';
+    }
+
 
     /**
      * 保存项目路径
@@ -52,6 +61,30 @@ export class SettingService {
 
     getOutputPath(): string{
         return this.settingStore.getOutputPath();
+    }
+
+    /**
+     * Chrome路径
+     * @param {string} project
+     */
+    saveChromePath(projectPath: string): void {
+        this.settingStore.saveChromePath(projectPath);
+    }
+
+    getChromePath(): string{
+        return this.settingStore.getChromePath();
+    }
+
+    /**
+     * TestUrl路径
+     * @param {string} project
+     */
+    saveTestUrlPath(projectPath: string): void {
+        this.settingStore.saveTestURLPath(projectPath);
+    }
+
+    getTestUrlPath(): string{
+        return this.settingStore.getTestURLPath();
     }
 
     /**
