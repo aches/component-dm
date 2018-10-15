@@ -9,7 +9,6 @@ export class TestCore {
 
     //测试url
     url: string;
-
     //模拟多个设备
     deviceList: Array<Object>;
 
