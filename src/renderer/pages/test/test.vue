@@ -1,43 +1,56 @@
 <template>
-  <div style="height: 100%;">
-      <el-form style="height: 100%; width: 50%" :model="settingForm">
-          <el-container style="height: 100%;">
-              <el-container>
-                  <el-header style="height: 30px">
-                      <label style="margin-left: 310px;">Width</label>
-                      <label style="margin-left: 50px">Height</label>
-                  </el-header>
+    <div style="height: 100%; ">
+        <el-form style="height: 100%; width: 100%" :model="settingForm">
+            <el-container style="height: 100%;">
+                <el-container>
 
-                  <el-main>
-                      <el-form-item v-for="item in devices" :label="item.name" style="margin: 0 auto" label-width="250px" prop="checkbox" >
-                          <el-checkbox :label="item.name" name="type" v-model="settingForm.checkbox">
-                              <el-input style="width: 100px;" v-model="item.viewport.width"></el-input>
-                              <el-input style="width: 100px;" v-model="item.viewport.height" ></el-input>
-                          </el-checkbox>
-                      </el-form-item>
-                  </el-main>
-                  <el-footer style=" height: 200px;">
-                      <el-form-item label="测试URL" style="margin-top: 50px">
-                        <el-input style="width: 350px;" v-model="settingForm.testURL"></el-input>
-                      </el-form-item>
+                    <el-form  label-width="80px">
+                        <el-form-item label="选择设备">
+                            <el-select style="width: 350px;"  multiple  v-model="testDevices" placeholder="请选择">
+                                <el-option
+                                        v-for="(item,index) in devices"
+                                        :key="'device'+index"
+                                        :label="item.name"
+                                        :value="index">
+                                    <span style="float: left">{{ item.name }}</span>
+                                    <div style="float: right;margin-left:35px;width: 75px">
+                                        <span style="color: #8492a6; font-size: 13px;">{{ item.viewport.width }}x{{ item.viewport.height }}</span>
+                                    </div>
+                                    <!-- <div style="float: right;margin-left:35px;width: 35px">
+                                         <span style="color: #8492a6; font-size: 13px"></span>
+                                     </div>-->
 
-                      <el-form-item>
-                          <el-button type="primary" @click="saveSetting">开始</el-button>
-                      </el-form-item>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="测试URL" style="margin-top: 50px">
+                            <el-input style="width: 350px;" v-model="settingForm.testURL"></el-input>
+                        </el-form-item>
 
-                  </el-footer>
-              </el-container>
+                        <el-form-item>
+                            <el-button type="primary" @click="saveSetting">开始</el-button>
+                        </el-form-item>
+                    </el-form>
+                 <!--   <el-footer style=" height: 200px;margin-top:40px">
 
-              <el-aside width="200px">
-                  <el-form-item label-width="60px">
-                      <p><el-radio label="测试微件" v-model="radio" name="type" ></el-radio></p>
-                      <p><el-radio label="测试3D" v-model="radio" name="type" ></el-radio></p>
-                      <p><el-radio label="测试1"  v-model="radio" name="type" ></el-radio></p>
-                  </el-form-item>
-              </el-aside>
-          </el-container>
-      </el-form>
-  </div>
+                    </el-footer>-->
+                </el-container>
+
+                <el-aside  >
+                    <el-form  label-width="80px">
+                        <el-form-item  >
+                            <p><el-radio label="3D微件旋转脚本"  v-model="radio" name="type" ></el-radio></p>
+                            <!--<p><el-radio label="3D微件测试脚本1" v-model="radio1" name="type" ></el-radio></p>
+                            <p><el-radio label="3D微件测试脚本2" v-model="radio2" name="type" ></el-radio></p>
+                            <p><el-radio label="3D微件测试脚本3" v-model="radio3" name="type" ></el-radio></p>
+                            <p><el-radio label="3D微件测试脚本4" v-model="radio4" name="type" ></el-radio></p>
+                            <p><el-radio label="3D微件测试脚本5" v-model="radio5" name="type" ></el-radio></p>-->
+                        </el-form-item>
+                    </el-form>
+                </el-aside>
+            </el-container>
+        </el-form>
+    </div>
 </template>
 
 <script lang="ts">
@@ -52,6 +65,11 @@
         return {
             devices: [],
             radio: '测试3D',
+            radio1: '测试3D',
+            radio2: '测试3D',
+            radio3: '测试3D',
+            radio4: '测试3D',
+            radio5: '测试3D',
             settingServices:new SettingService(),
             settingForm: {
                 checkbox: [],
@@ -59,6 +77,7 @@
             },
 
             devicesList: [],
+            testDevices: []
         }
       },
       mounted(){
@@ -70,19 +89,16 @@
       methods:{
           saveSetting(){
 
-              this.settingServices.saveTestUrlPath(this.settingForm.testURL);
+              const _ = require('lodash');
+              //var selectDevices = _.find(Devices.devices , (o,i) => { return !this.testDevices.indexOf(i); });
+              var selectDevices = _.pullAt(_.assign([], Devices.devices ), this.testDevices);
+              console.log('selectDevices', selectDevices);
 
-              for (let i = 0; i < this.devices.length; i++) {
-                  for (let k = 0; k < this.settingForm.checkbox.length; k++) {
-                      if (this.devices[i].name === this.settingForm.checkbox[k]) {
-                          this.devicesList[k] = this.devices[i];
-                      }
-                  }
-              }
 
-              // console.log('this.checkboxArray', this.devicesList, this.settingForm.testURL);
 
-              const aaa = new TestCore(this.settingForm.testURL, this.devicesList, this.radio);
+//              console.log('this.checkboxArray', this.devicesList, this.settingForm.testURL, this.radio);
+              console.log('测试url：' + this.settingForm.testURL);
+              new TestCore(this.settingForm.testURL, selectDevices, this.radio);
 
           },
 
