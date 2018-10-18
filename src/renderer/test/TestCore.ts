@@ -18,7 +18,7 @@ export class TestCore {
 
     constructor(url: any, deviceList: any, testCall: any) {
 
-        this.url = this.settingServices.getTestUrlPath();
+        this.url = url;
         this.deviceList = deviceList;
         this.testCall = testCall;
 
@@ -76,6 +76,7 @@ export class TestCore {
             headless: false,
             defaultViewport: device.viewport,
             args: [
+                `--disable-web-security`,
                 `--no-throttle`,
                 `--app=${this.url}`,
                 '--disable-infobars',
