@@ -116,7 +116,12 @@ export class ProjectService{
             const widget = widgetArray[i];
             const temp = widget.path.split(path.sep);
             temp.pop();
-            const widgetIndex = temp.indexOf('widget');
+
+            // 判断是识微还是习悦的微件
+            let widgetIndex = temp.indexOf('widget');
+            if (temp.indexOf('widget_sw') > 0) {
+                widgetIndex = temp.indexOf('widget_sw');
+            }
             for(let j = 0 ; j < widgetIndex;j++){
                 temp.shift();
             }
@@ -132,6 +137,7 @@ export class ProjectService{
                 (error)=>{
                     window['$vue'].processContent += error ;
                 } );
+
             console.info(widget.alias,result);
             if(result) {
 
