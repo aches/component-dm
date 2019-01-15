@@ -9,3 +9,8 @@ html,body {
 #app {
     height: 100%;
 }
+
+
+.el-aside {
+    overflow: visible;
+}

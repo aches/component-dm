@@ -4,7 +4,7 @@
 
     <el-card class="box-card" :body-style="{height:'calc(100% - 95px)',overflow:'auto'}" style="height: 100%" >
       <div slot="header" class="clearfix" >
-        <el-button type="primary"  @click="doPackage()">打包</el-button>
+        <el-button   size="small" type="primary"  @click="doPackage()">打包</el-button>
 
     <!--   <el-select v-model="selectNo" multiple  placeholder="请选择期号">
           <el-option
@@ -27,11 +27,14 @@
 
 
       </div>
-      <div>
+      <div style="height: 100%">
         <el-table
                 ref="multipleTable"
+                height="100%"
                 :data="projectList"
                 tooltip-effect="dark"
+                :summary-method="getSummaries"
+                show-summary
                 style="width: 100%"
                 :default-sort = "{prop: 'no', order: 'descending'}"
                 @selection-change="handleSelectionChange">
@@ -89,7 +92,7 @@
       <el-card class="box-card" style="height:100%" :body-style="{ height: '85%' }">
         <div slot="header" class="clearfix">
           <span>微件打包</span>
-          <el-button style="float: right; " @click="dialogVisible = false" size="mini">取 消</el-button>
+          <el-button style="float: right; " @click="canclePackage" size="mini">取 消</el-button>
           <el-button style="float: right; margin-right: 30px;" type="primary" :loading="isPacking" @click="confirmPackage" size="mini">开 始</el-button>
         </div>
         <div   class="text item" style="height:100%">
@@ -108,8 +111,9 @@
 
               </div>
             </el-col>
+            <!--终端-->
             <el-col :span="18" class="content-wrap" style="height: 100%;">
-              <div id="termDiv" style="position: relative;bottom: 0;right: 0;z-index: 99;width: 1000px;height: 100%"> </div>
+              <div id="termDiv" style="position: relative;bottom: 0;right: 0;z-index: 99;height: 100%"> </div>
             </el-col>
           </el-row>
 
@@ -132,6 +136,7 @@
   import {ProjectService} from "../services/ProjectService";
   import 'xterm/dist/xterm.css';
   import { Terminal } from 'xterm';
+  import { fit } from 'xterm/lib/addons/fit/fit';
   import {CommandUtil} from "../util/CommandUtil";
 
   export default Vue.extend ({
@@ -177,7 +182,6 @@
       },
       async mounted(){
 
-
           //this.term.write('Hello from \n\raaa ')
 
           window['$vue'] = this;
@@ -203,10 +207,6 @@
               }
               console.log(this.projectServices.nums);
 
-
-
-
-
           } catch (e) {
               this.$message({ type: 'warning', message: e.message});
           }
@@ -219,6 +219,13 @@
       },
       methods:{
           doPackage() {
+              if(this.multipleSelection.length == 0) {
+                  this.$message({
+                      message: '请至少选择一个微件',
+                      type: 'warning'
+                  });
+                  return;
+              }
             this.dialogVisible = true;
               setTimeout(() =>{
                   if(this.term){
@@ -227,12 +234,13 @@
                   const options = {
                       cols : 120
                   };
+
                   this.term = new Terminal(options);
                   console.log(this.term);
                   this.term.open(document.getElementById('termDiv'));
                   //this.term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ')
-
-              }, 1000)
+                  fit(this.term);
+              }, 300)
           },
           confirmPackage(){
             this.isPacking = true;
@@ -252,15 +260,44 @@
                   .catch(_ => {});
           },
           filterHandler(value, row, column) {
-              console.log(value);
-              console.log(row);
-              console.log(column);
+
               const property = column['property'];
               return row[property] === value;
               //return row.category == value;
           },
           numFilterChange(sort ) {
             console.log(sort);
+          },
+          canclePackage() {
+              this.dialogVisible = false;
+              //this.isPacking = false;
+          },
+          getSummaries(param) {
+              const { columns, data } = param;
+              const sums = [];
+              columns.forEach((column, index) => {
+                  if (index === 0) {
+                      sums[index] = '';
+                      return;
+                  }
+                  if (index === 1) {
+                      sums[index] = '统计';
+                      return;
+                  }
+                  if (index === 2) {
+                      sums[index] = '习悦：' + this.projectServices.xyCounts;
+                  }
+                  if (index === 3) {
+                      sums[index] = '识微：' + this.projectServices.swCounts;
+                  }
+                  if (index === 4) {
+                      sums[index] = '共计：' +this.projectServices.project.length;
+                      return;
+                  }
+
+              });
+
+              return sums;
           }
       },
       watch:{

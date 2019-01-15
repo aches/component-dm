@@ -14,8 +14,13 @@ export class ProjectService{
 
     private settingStore:SettingStore;
 
+    //项目列表
     private project = new Array<object>();
+    //期号列表
     private nums = new Array<string>();
+
+    private swCounts = 0;
+    private xyCounts = 0;
 
     constructor() {
         this.settingStore = new SettingStore();
@@ -37,8 +42,10 @@ export class ProjectService{
         //await this.readFolder(projectConfig.widgetFolder);
         //console.log(projectConfig.widgetFolder);
         await this.iteraFolder(projectConfig.widgetFolder);
+        this.xyCounts = this.project.length;
 
         await this.iteraFolder(projectConfig.widgetSWFolder);
+        this.swCounts = this.project.length - this.xyCounts;
         //console.log(this.project);
         //读取文件目录
         //学科目录
