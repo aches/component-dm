@@ -1,136 +1,49 @@
 <template>
-  <div style="height: 100%;"  v-loading="loading" element-loading-text="拼命加载中">
-
-
-    <el-card class="box-card" :body-style="{height:'calc(100% - 95px)',overflow:'auto'}" style="height: 100%" >
-      <div slot="header" class="clearfix" >
-        <el-button   size="small" type="primary"  @click="doPackage()">打包</el-button>
-
-        <el-button   size="small" type="primary"  @click="doPackage()">新建微件</el-button>
-
-
-    <!--   <el-select v-model="selectNo" multiple  placeholder="请选择期号">
-          <el-option
-                  v-for="item in allNums"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-          </el-option>
+  <div style="height: 100%;"  >
+    <el-form ref="form" :model="form" label-width="80px">
+      <el-form-item label="活动名称">
+        <el-input v-model="form.name"></el-input>
+      </el-form-item>
+      <el-form-item label="活动区域">
+        <el-select v-model="form.region" placeholder="请选择活动区域">
+          <el-option label="区域一" value="shanghai"></el-option>
+          <el-option label="区域二" value="beijing"></el-option>
         </el-select>
-
-        <el-select v-model="selectSubject" multiple  placeholder="请选择学科">
-          <el-option
-                  v-for="item in subjects"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-          </el-option>
-        </el-select>
--->
-
-
-      </div>
-      <div style="height: 100%">
-        <el-table
-                ref="multipleTable"
-                height="100%"
-                :data="projectList"
-                tooltip-effect="dark"
-                :summary-method="getSummaries"
-                show-summary
-                style="width: 100%"
-                :default-sort = "{prop: 'no', order: 'descending'}"
-                @selection-change="handleSelectionChange">
-          <el-table-column
-                  type="selection"
-                  width="55">
-          </el-table-column>
-          <el-table-column
-                  prop="no"
-                  :filters="allNums"
-                  :filter-method="filterHandler"
-                  label="期号"
-                  sortable
-                  width="120">
-            <!--<template slot-scope="scope">{{ scope.row.no }}</template>-->
-          </el-table-column>
-          <el-table-column
-                  prop="category"
-                  sortable
-                  label="学科"
-                  width="120"
-                  filter-multiple
-                  :filters="[{ value: 'math',text: '数学'}, {value: 'geography',text: '地理'}, {value: 'physics',text: '物理'}, {value: 'chemistry',text: '化学'}, {value: 'biology',text: '生物'}]"
-                  :filter-method="filterHandler"
-                 >
-          </el-table-column>
-          <el-table-column
-                  prop="title"
-                  label="标题"
-                 >
-          </el-table-column>
-          <el-table-column
-                  prop="author"
-                  label="作者"
-                  show-overflow-tooltip>
-          </el-table-column>
-        </el-table>
-      </div>
-      <!--
-        <div v-for="o in 4" :key="o" class="text item">
-        {{'列表内容 ' + o }}
-      </div>-->
-    </el-card>
-
-
-    <!--打包弹窗-->
-    <!--<el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="80%"
-            style="height:80%"
-            :before-close="handleClose">-->
-    <div style="position: absolute;z-index: 2;left: 0;top: 0;width: 100%;height: 100%;padding: 20px; box-sizing: border-box;"
-         v-show="dialogVisible">
-      <el-card class="box-card" style="height:100%" :body-style="{ height: '85%' }">
-        <div slot="header" class="clearfix">
-          <span>微件打包</span>
-          <el-button style="float: right; " @click="canclePackage" size="mini">取 消</el-button>
-          <el-button style="float: right; margin-right: 30px;" type="primary" :loading="isPacking" @click="confirmPackage" size="mini">开 始</el-button>
-        </div>
-        <div   class="text item" style="height:100%">
-          <el-row style="height:100%">
-            <el-col :span="6" class="" style="height:100%">
-              <div class="title-nav-wrap"  style="height:100%;overflow-y: auto">
-                  <div v-for="widget in multipleSelection" class="title">{{widget.title}}
-                    <i v-if="widget.status == 'success' " class="el-icon-success"></i>
-                    <i v-if="widget.status == 'error' " class="el-icon-error"></i>
-                    <i v-if="widget.status == 'loading' " class="el-icon-loading"></i>
-                  </div>
-                  <!--<div class="title">乙烷的旋转异构体 <i class="el-icon-error"></i></div>
-                  <div class="title">乙烷的旋转异构体 <i class="el-icon-loading"></i></div>-->
-
-
-
-              </div>
-            </el-col>
-            <!--终端-->
-            <el-col :span="18" class="content-wrap" style="height: 100%;">
-              <div id="termDiv" style="position: relative;bottom: 0;right: 0;z-index: 99;height: 100%"> </div>
-            </el-col>
-          </el-row>
-
-
-        </div>
-      </el-card>
-
-      <!--  <div style="height: 20%;">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" :loading="isPacking" @click="confirmPackage">确 定</el-button>
-      </div>-->
-    </div>
-    <!--</el-dialog>-->
-
+      </el-form-item>
+      <el-form-item label="活动时间">
+        <el-col :span="11">
+          <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
+        </el-col>
+        <el-col class="line" :span="2">-</el-col>
+        <el-col :span="11">
+          <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
+        </el-col>
+      </el-form-item>
+      <el-form-item label="即时配送">
+        <el-switch v-model="form.delivery"></el-switch>
+      </el-form-item>
+      <el-form-item label="活动性质">
+        <el-checkbox-group v-model="form.type">
+          <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
+          <el-checkbox label="地推活动" name="type"></el-checkbox>
+          <el-checkbox label="线下主题活动" name="type"></el-checkbox>
+          <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="特殊资源">
+        <el-radio-group v-model="form.resource">
+          <el-radio label="线上品牌商赞助"></el-radio>
+          <el-radio label="线下场地免费"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="活动形式">
+        <el-input type="textarea" v-model="form.desc"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+        <el-button>取消</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
