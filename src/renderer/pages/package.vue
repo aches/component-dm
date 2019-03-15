@@ -6,7 +6,7 @@
       <div slot="header" class="clearfix" >
         <el-button   size="small" type="primary"  @click="doPackage()">打包</el-button>
 
-        <el-button   size="small" type="primary"  @click="doPackage()">新建微件</el-button>
+        <el-button   size="small" type="primary"  @click="createWidget()">新建微件</el-button>
 
 
     <!--   <el-select v-model="selectNo" multiple  placeholder="请选择期号">
@@ -90,9 +90,9 @@
             width="80%"
             style="height:80%"
             :before-close="handleClose">-->
-    <div style="position: absolute;z-index: 2;left: 0;top: 0;width: 100%;height: 100%;padding: 20px; box-sizing: border-box;"
+    <div style="position: absolute;z-index: 2;left: 0;top: 0;welidth: 100%;height: 100%;padding: 20px; box-sizing: border-box;"
          v-show="dialogVisible">
-      <el-card class="box-card" style="height:100%" :body-style="{ height: '85%' }">
+      <el-card class="box-card" style="height:100%" :body-style="{ height: '85%' }" v-show="isShow1">
         <div slot="header" class="clearfix">
           <span>微件打包</span>
           <el-button style="float: right; " @click="canclePackage" size="mini">取 消</el-button>
@@ -124,6 +124,16 @@
         </div>
       </el-card>
 
+        <div v-show="isShow2" style="background-color: white;box-shadow: 0 0 2px 0 #666666;border-radius: 10px; padding: 10px; position: relative; left: calc(100% - 395px);top: calc(50% - 382px)">
+        <!--<span>新建微件</span>-->
+        <el-button @click="cancelForm()" style="position: absolute; right: 20px;bottom: 35px">关闭</el-button>
+        <widgetTemplate ref="formData">
+        </widgetTemplate>
+        <!--<el-button type="primary" @click="onSubmit()" style="margin-left: 40%">立即创建</el-button>-->
+
+
+      </div>
+
       <!--  <div style="height: 20%;">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" :loading="isPacking" @click="confirmPackage">确 定</el-button>
@@ -141,12 +151,18 @@
   import 'xterm/dist/xterm.css';
   import { Terminal } from 'xterm';
   import { fit } from 'xterm/lib/addons/fit/fit';
+  import widgetTemplate from "../components/widgetTemplate";
   import {CommandUtil} from "../util/CommandUtil";
 
   export default Vue.extend ({
+      components: {
+          widgetTemplate,
+      },
       name: 'setting',
       data() {
         return {
+          isShow1: false,
+          isShow2: false,
           route: this.$route.path.replace('/',''),
           settingServices:new SettingService(),
             projectServices:new ProjectService(),
@@ -222,6 +238,13 @@
 
       },
       methods:{
+          cancelForm() {
+              this.isShow2 = false;
+              this.isShow1 = false;
+          },
+          newWidget() {
+
+          },
           doPackage() {
               if(this.multipleSelection.length == 0) {
                   this.$message({
@@ -231,6 +254,8 @@
                   return;
               }
             this.dialogVisible = true;
+              this.isShow2 = false;
+              this.isShow1 = true;
               setTimeout(() =>{
                   if(this.term){
                       return;
@@ -245,6 +270,11 @@
                   //this.term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ')
                   fit(this.term);
               }, 300)
+          },
+          createWidget() {
+              this.dialogVisible = true;
+              this.isShow1 = false;
+              this.isShow2 = true;
           },
           confirmPackage(){
             this.isPacking = true;
