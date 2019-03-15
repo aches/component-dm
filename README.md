@@ -1,6 +1,7 @@
 # 项目开发脚手架
 --引用于原项目是基于js的[electron-vue](https://github.com/SimulatedGREG/electron-vue)
 --References to the original project are based on js of [electron-vue](https://github.com/SimulatedGREG/electron-vue)
+#art-template版本保持在4.1.0,升级可能会导致某些错误
 
 > An electron-vue-typescript project
 

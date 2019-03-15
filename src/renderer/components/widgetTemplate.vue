@@ -1,47 +1,74 @@
 <template>
   <div style="height: 100%;"  >
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="活动名称">
-        <el-input v-model="form.name"></el-input>
+    <el-form ref="form" :model="form" :rules = 'rules' label-width="165px">
+      <el-form-item label="微件名称" prop="name">
+        <el-input v-model="form_name" style="width: 300px;" placeholder="中文名/微件标题"></el-input>
+        <el-input v-model="form_pinyinName" style="width: 300px;" placeholder="英文名/项目名"></el-input>
       </el-form-item>
-      <el-form-item label="活动区域">
-        <el-select v-model="form.region" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="活动时间">
-        <el-col :span="11">
-          <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
-        </el-col>
-        <el-col class="line" :span="2">-</el-col>
-        <el-col :span="11">
-          <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="即时配送">
-        <el-switch v-model="form.delivery"></el-switch>
-      </el-form-item>
-      <el-form-item label="活动性质">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-          <el-checkbox label="地推活动" name="type"></el-checkbox>
-          <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-          <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="特殊资源">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="线上品牌商赞助"></el-radio>
-          <el-radio label="线下场地免费"></el-radio>
+      <el-form-item label="布局">
+        <el-radio-group v-model="form.layout">
+          <el-radio label="全局布局"></el-radio>
+          <el-radio label="左右布局"></el-radio>
+          <el-radio label="习题布局"></el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="活动形式">
-        <el-input type="textarea" v-model="form.desc"></el-input>
+      <el-form-item label="期号" prop="time" placeholder="请输入期号">
+        <el-input v-model="form.time" style="width: 120px"></el-input>
       </el-form-item>
+      <el-form-item label="学科" prop="subject">
+        <el-select v-model="form.subject" placeholder="请选择学科">
+          <el-option label="数学" value="math"></el-option>
+          <el-option label="地理" value="geography"></el-option>
+          <el-option label="物理" value="physics"></el-option>
+          <el-option label="化学" value="chemistry"></el-option>
+          <el-option label="生物" value="biology"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="重置按钮">
+        <el-radio-group v-model="form.reset">
+          <el-radio label="需要"></el-radio>
+          <el-radio label="不需要"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="移动端重置按钮">
+        <el-radio-group v-model="form.resetMobile">
+          <el-radio label="需要"></el-radio>
+          <el-radio label="不需要"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="适配移动端">
+        <el-radio-group v-model="form.adaptationMobile">
+          <el-radio label="适配"></el-radio>
+          <el-radio label="不适配"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="展开按钮">
+        <el-radio-group v-model="form.expand">
+          <el-radio label="显示"></el-radio>
+          <el-radio label="不显示"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="移动端控制面板">
+        <el-radio-group v-model="form.controlPanel">
+          <el-radio label="显示"></el-radio>
+          <el-radio label="不显示"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="控制面板延迟出现时间" prop="animationDelayTime">
+        <el-input v-model="form.animationDelayTime" style="width: 150px;" placeholder="请输入时间(毫秒)"></el-input>
+      </el-form-item>
+
+      <el-form-item label="所属团队" prop="team">
+        <el-select v-model="form.team" placeholder="请选择开发团队">
+          <el-option label="习悦" value="xiyue"></el-option>
+          <el-option label="识微" value="shiwei"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-button type="primary" @click="onSubmit('form')" style="margin-left: 40%">立即创建</el-button>
+      <el-button @click="resetForm('form')">重置</el-button>
+
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
-        <el-button>取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -55,24 +82,62 @@
   import { Terminal } from 'xterm';
   import { fit } from 'xterm/lib/addons/fit/fit';
   import {CommandUtil} from "../util/CommandUtil";
-
+  import {WidgetTemplateServices} from "../services/WidgetTemplateServices";
+  const pinyin = require('pinyin');
   export default Vue.extend ({
       name: 'setting',
       data() {
         return {
+          form: {
+              name:'',
+              pinyinName: '',
+              time:'',
+              subject: '',
+              team: '',
+              layout: '全局布局',
+              reset: '需要',
+              resetMobile: '需要',
+              adaptationMobile:'适配',
+              animationDelayTime: null,
+              expand:'显示',
+              controlPanel: '显示',
+          },
+          rules: {
+              name: [
+                  { required: true, message: '请输入微件名称', trigger: 'blur' },
+              ],
+              pinyinName: [
+                  { required: true, message: '请输入活动名称', trigger: 'blur' },
+              ],
+              time: [
+                  { required: true, message: '请输入期号', trigger: 'blur' },
+                  { type: 'number', message: '请输入数字', trigger: 'blur' },
+              ],
+              subject: [
+                  { required: true, message: '请选择学科', trigger: 'blur' },
+              ],
+              animationDelayTime: [
+                  { required: true, message: '请输入延迟时间', trigger: 'blur' },
+                  { type: 'number', message: '请输入数字', trigger: 'blur' },
+              ],
+              team: [
+                  { required: true, message: '请选择开发团队', trigger: 'blur' },
+              ],
+          },
+          form_name: '',
+          form_pinyinName: '',
           route: this.$route.path.replace('/',''),
           settingServices:new SettingService(),
             projectServices:new ProjectService(),
             projectPath: '',
             selectedOptions:[],
-            loading:true,
-            isPacking:false,
+            loading: true,
+            isPacking: false,
             projectList: [],
             multipleSelection:[],
             dialogVisible: false,
             processContent:'',
             term:null,
-
             selectSubject:[],
             selectNo:[],
             allNums:[],
@@ -135,6 +200,24 @@
 
       },
       methods:{
+
+          setPinYin() {
+
+          },
+          onSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('创建成功');
+                        new WidgetTemplateServices(this.form);
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+          },
+          resetForm(formName) {
+              this.$refs[formName].resetFields();
+          },
           doPackage() {
               if(this.multipleSelection.length == 0) {
                   this.$message({
@@ -223,6 +306,15 @@
           },
           selectSubject: function(val){
 
+          },
+          form_name: function(value: string) {
+              this.form_pinyinName = pinyin(value, {
+                  style: pinyin.STYLE_FIRST_LETTER
+              }).join('');
+              this.form.name = value;
+          },
+          form_pinyinName: function (value: string) {
+              this.form.pinyinName = value;
           }
       }
   });
