@@ -104,24 +104,24 @@
           },
           rules: {
               name: [
-                  { required: true, message: '请输入微件名称', trigger: 'blur' },
+                  { required: true, message: '请输入微件名称', trigger: 'change' },
               ],
               pinyinName: [
-                  { required: true, message: '请输入活动名称', trigger: 'blur' },
+                  { required: true, message: '请输入活动名称', trigger: 'change' },
               ],
               time: [
-                  { required: true, message: '请输入期号', trigger: 'blur' },
-                  { type: 'number', message: '请输入数字', trigger: 'blur' },
+                  { required: true, message: '请输入期号', trigger: 'change' },
+                  { required: true, type: 'string', message: '请输入数字', trigger: 'change', pattern: /^\d+$/ },
               ],
               subject: [
-                  { required: true, message: '请选择学科', trigger: 'blur' },
+                  { required: true, message: '请选择学科', trigger: 'blur', trigger: 'change' },
               ],
               animationDelayTime: [
-                  { required: true, message: '请输入延迟时间', trigger: 'blur' },
-                  { type: 'number', message: '请输入数字', trigger: 'blur' },
+                  { required: true, message: '请输入延迟时间', trigger: 'change' },
+                  { required: true, type: 'string', message: '请输入数字', trigger: 'change', pattern: /^\d+$/ },
               ],
               team: [
-                  { required: true, message: '请选择开发团队', trigger: 'blur' },
+                  { required: true, message: '请选择开发团队', trigger: 'blur', trigger: 'change' },
               ],
           },
           form_name: '',
@@ -210,6 +210,8 @@
                         alert('创建成功');
                         new WidgetTemplateServices(this.form);
                     } else {
+                        console.log(this.form.time);
+                        console.log(this.form.animationDelayTime);
                         console.log('error submit!!');
                         return false;
                     }
