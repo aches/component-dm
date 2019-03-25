@@ -54,6 +54,18 @@
           <el-radio label="不显示"></el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="是否强制横屏">
+        <el-radio-group v-model="form.forcedLandscape">
+          <el-radio label="是"></el-radio>
+          <el-radio label="否"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="是否加密">
+        <el-radio-group v-model="form.encryption">
+          <el-radio label="是"></el-radio>
+          <el-radio label="否"></el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="控制面板延迟出现时间" prop="animationDelayTime">
         <el-input v-model="form.animationDelayTime" style="width: 150px;" placeholder="请输入时间(毫秒)"></el-input>
       </el-form-item>
@@ -101,6 +113,9 @@
               animationDelayTime: null,
               expand:'显示',
               controlPanel: '显示',
+              forcedLandscape:'是',
+              encryption:'是',
+
           },
           rules: {
               name: [
@@ -210,8 +225,6 @@
                         alert('创建成功');
                         new WidgetTemplateServices(this.form);
                     } else {
-                        console.log(this.form.time);
-                        console.log(this.form.animationDelayTime);
                         console.log('error submit!!');
                         return false;
                     }

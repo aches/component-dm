@@ -90,6 +90,8 @@ export class WidgetTemplateServices {
             animationDelayTime: 0,  //控制面板延迟动画
             expand: true,           //展开按钮
             controlPanel:  true,    //控制面板
+            forcedLandscape: true,  //是否强制横屏
+            encryption: true,       //是否加密
         };
         obj.name = form.name;
         obj.pinyinName = form.pinyinName;
@@ -103,6 +105,8 @@ export class WidgetTemplateServices {
         obj.animationDelayTime = form.animationDelayTime;
         obj.expand = form.expand === '显示' ? true : false;
         obj.controlPanel = form.controlPanel === '显示' ? false : true;
+        obj.forcedLandscape = form.forcedLandscape === '是' ? true : false;
+        obj.encryption = form.encryption === '是' ? true : false;
         return obj;
     }
 }
