@@ -77,6 +77,10 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="开发者姓名" prop="developerName">
+        <el-input v-model="form.developerName" style="width: 300px;" placeholder="姓名"></el-input>
+      </el-form-item>
+
       <el-button type="primary" @click="onSubmit('form')" style="margin-left: 40%">立即创建</el-button>
       <el-button @click="resetForm('form')">重置</el-button>
 
@@ -103,6 +107,7 @@
           form: {
               name:'',
               pinyinName: '',
+              developerName:'',
               time:'',
               subject: '',
               team: '',
@@ -120,6 +125,9 @@
           rules: {
               name: [
                   { required: true, message: '请输入微件名称', trigger: 'change' },
+              ],
+              developerName: [
+                  {required: true, message: '请输入开发者姓名', trigger: 'change'}
               ],
               pinyinName: [
                   { required: true, message: '请输入活动名称', trigger: 'change' },
