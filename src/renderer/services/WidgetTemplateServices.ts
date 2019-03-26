@@ -71,7 +71,6 @@ export class WidgetTemplateServices {
 
     //插入代码
     insertCode(filePath, code) {
-        console.log(code)
         fs.writeFileSync(filePath, code, 'utf-8');
     }
 
@@ -92,8 +91,10 @@ export class WidgetTemplateServices {
             controlPanel:  true,    //控制面板
             forcedLandscape: true,  //是否强制横屏
             encryption: true,       //是否加密
+            developerName: '',
         };
         obj.name = form.name;
+        obj.developerName = form.developerName
         obj.pinyinName = form.pinyinName;
         obj.time = form.time;
         obj.subject = form.subject;

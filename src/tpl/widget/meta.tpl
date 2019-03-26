@@ -1,7 +1,7 @@
 {
-  "title":"",
+  "title":"<%= form.name %>",
   "dependencies":[],
-  "author":"<%= form.name %>",
+  "author":"<%= form.developerName %>",
   "meta":{"viewport": "width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"},
   "config": {
     "showReset": <%= form.reset%>,
