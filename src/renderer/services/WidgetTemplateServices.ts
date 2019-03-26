@@ -71,7 +71,6 @@ export class WidgetTemplateServices {
 
     //插入代码
     insertCode(filePath, code) {
-        console.log(code)
         fs.writeFileSync(filePath, code, 'utf-8');
     }
 
