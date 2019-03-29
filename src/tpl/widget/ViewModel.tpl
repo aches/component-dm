@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import {ViewController} from '../../../../src/core/ViewController';
 import {ViewOption} from '../../../../src/core/CoreInterface';
-import {TemplateViewHandler} from './services/TemplateViewHandler';
+import {<%= form.templateName %>} from './services/<%= form.templateName %>';
 const viewOptionConfig = require('./meta.json');
 @Component
 export class ViewModel extends Vue {
@@ -16,7 +16,7 @@ export class ViewModel extends Vue {
     viewOption.controlPanelAnimationDelay = viewOptionConfig.config.controlPanelAnimationDelay;
     viewOption.showReset = viewOptionConfig.config.showReset;
 
-    ViewController.getInstance(new TemplateViewHandler(this), viewOption);
+    ViewController.getInstance(new <%= form.templateName %>(this), viewOption);
     ViewController.getInstance().viewHandler.beforeRenderElement();
   }
 

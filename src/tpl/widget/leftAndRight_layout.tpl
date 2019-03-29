@@ -3,6 +3,7 @@
         <leftAndRightLayout>
             <template slot="viewBox" scope="viewBox" slot-scope="viewBox">
                 <span id="title" class="title_text"><%= form.name %></span>
+                   <div id="3dContainer"></div>
             </template>
             <template slot="controlPanel" scope="viewBox" slot-scope="controlPanel">
 

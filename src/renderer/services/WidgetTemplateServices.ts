@@ -12,6 +12,8 @@ export class WidgetTemplateServices {
         let metaJson: any;
         let viewModelHtml: any;
         let viewHandlerHtml: any;
+        let threeViewHandler: any;
+        let three3dModel: any
         let team: string;
         let subject: string;
         let time: string;
@@ -32,6 +34,8 @@ export class WidgetTemplateServices {
         mainTs = this.generateCode(data, 'main');
         metaJson = this.generateCode(data, 'meta');
         viewHandlerHtml = this.generateCode(data, 'services/TemplateViewHandler' );
+        threeViewHandler = this.generateCode(data, 'services/ThreejsViewHandler');
+        three3dModel = this.generateCode(data, 'services/Threejs3dModel');
         team = data.team === 'xiyue' ? 'widget/' : 'widget_sw/';
         subject = data.subject + '/';
         time = 'r' + data.time + '/';
@@ -55,7 +59,16 @@ export class WidgetTemplateServices {
         this.insertCode(widgetPath + 'viewModel.ts', viewModelHtml);
         this.insertCode(widgetPath + 'main.ts', mainTs);
         this.insertCode(widgetPath + 'meta.json', metaJson);
-        this.insertCode(widgetPath + 'services/TemplateViewHandler.ts', viewHandlerHtml);
+
+        switch (data.technology) {
+            case 'null':
+                this.insertCode(widgetPath + 'services/TemplateViewHandler.ts', viewHandlerHtml);
+                break;
+            case 'threejs':
+                this.insertCode(widgetPath + 'services/ThreejsViewHandler.ts', threeViewHandler)
+                this.insertCode(widgetPath + 'services/Threejs3dModel.ts', three3dModel)
+                break;
+        }
 
     }
 
@@ -92,6 +105,8 @@ export class WidgetTemplateServices {
             forcedLandscape: true,  //是否强制横屏
             encryption: true,       //是否加密
             developerName: '',
+            technology: '',
+            templateName: '',
         };
         obj.name = form.name;
         obj.developerName = form.developerName
@@ -99,6 +114,7 @@ export class WidgetTemplateServices {
         obj.time = form.time;
         obj.subject = form.subject;
         obj.team = form.team;
+        obj.technology = form.technology;
         obj.layout = form.layout;
         obj.reset = form.reset === '需要'? true : false;
         obj.resetMobile = form.resetMobile === '需要'? true : false;
@@ -108,6 +124,14 @@ export class WidgetTemplateServices {
         obj.controlPanel = form.controlPanel === '显示' ? false : true;
         obj.forcedLandscape = form.forcedLandscape === '是' ? true : false;
         obj.encryption = form.encryption === '是' ? true : false;
+        switch (form.technology) {
+            case 'null':
+                obj.templateName = 'TemplateViewHandler';
+                break;
+            case 'threejs':
+                obj.templateName = 'ThreejsViewHandler';
+                break;
+        }
         return obj;
     }
 }

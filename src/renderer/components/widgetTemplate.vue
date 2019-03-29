@@ -24,6 +24,12 @@
           <el-option label="生物" value="biology"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="技术框架" prop="technology">
+        <el-select v-model="form.technology" placeholder="请选择所使用的技术">
+          <el-option label="无" value="null"></el-option>
+          <el-option label="three.js" value="threejs"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="重置按钮">
         <el-radio-group v-model="form.reset">
           <el-radio label="需要"></el-radio>
@@ -120,6 +126,7 @@
               controlPanel: '显示',
               forcedLandscape:'是',
               encryption:'是',
+              technology: '',
 
           },
           rules: {
@@ -146,6 +153,9 @@
               team: [
                   { required: true, message: '请选择开发团队', trigger: 'blur', trigger: 'change' },
               ],
+              technology: [
+                  {required: true, message: '请选择所使用的技术', trigger: 'blur', trigger: 'change'}
+              ]
           },
           form_name: '',
           form_pinyinName: '',
