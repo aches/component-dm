@@ -42,6 +42,9 @@ export class WidgetTemplateServices {
         widgetName = data.pinyinName + '/';
         widgetPath = this.projectPath + '/' + team + subject + time + widgetName;
         //创建没有的文件夹路径
+        if (!fs.existsSync(this.projectPath+'/'+ team + data.subject)) {
+            fs.mkdirSync(this.projectPath+'/'+ team + data.subject);
+        }
         if (!fs.existsSync(this.projectPath+'/'+ team + subject + 'r' + data.time)) {
             fs.mkdirSync(this.projectPath+'/'+ team + subject + 'r' + data.time);
         };
