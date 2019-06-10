@@ -96,4 +96,18 @@ export class SettingService {
         //TODO 待实现
     }
 
+    exportJson(projectList:any) {
+
+        const options = {
+            title: '保存json数据',
+            filters: [
+                { name: 'Json', extensions: ['json'] }
+            ]
+        }
+        dialog.showSaveDialog(options, function (filename) {
+            const fs = require('fs');
+            fs.writeFileSync(filename, JSON.stringify(projectList));
+        })
+    }
+
 }

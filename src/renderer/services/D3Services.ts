@@ -23,7 +23,6 @@ export class D3Service {
      */
     async playcanvsStructure(file: any) {
 
-
         const decompress = require('decompress');
         //1.解压playcanvas包到输出目录
         const files = await decompress(file.raw.path, this.settingStore.getOutputPath());

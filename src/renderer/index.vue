@@ -4,7 +4,7 @@
       <el-aside style="width: auto;">
 
         <el-menu mode="vertical" router :default-active="route"  background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
-                 unique-opened  :collapse="isCollapse" style="height: 100%;">
+                 unique-opened  :collapse="isCollapse" style="height: 100%; ">
           <el-menu-item index="setting-page">
               <i class="el-icon-setting"></i>
               <span slot="title" >配置管理</span>
@@ -56,6 +56,9 @@
           isCollapse:true,
           route: this.$route.path.replace('/','')
         }
+      },
+      mounted(){
+          //this.$route.push('/3d-page')
       }
   });
 </script>

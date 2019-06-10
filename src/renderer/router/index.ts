@@ -72,7 +72,7 @@ const router = new Router({
         },
         {
             path: '*',
-            redirect: '/index'
+            redirect: '/3d-page'
         }
     ]
 } as any);

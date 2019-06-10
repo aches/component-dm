@@ -21,5 +21,9 @@ export class Widget {
 
     category:string;
 
+    company:string;
+
+    svnPath:string;
+
 
 }

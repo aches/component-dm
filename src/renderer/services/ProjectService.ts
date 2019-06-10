@@ -109,6 +109,11 @@ export class ProjectService{
         }*/
         widget.no       = widgetPathArray[widgetPathArray.length-2];
         widget.category = widgetPathArray[widgetPathArray.length-3];
+        widget.company = widgetPathArray[widgetPathArray.length-4]
+        widget.svnPath = widgetPathArray[widgetPathArray.length-4] + path.sep
+            + widgetPathArray[widgetPathArray.length-3] + path.sep
+            + widgetPathArray[widgetPathArray.length-2] + path.sep
+            + widgetPathArray[widgetPathArray.length-1]
         return widget;
 
     }

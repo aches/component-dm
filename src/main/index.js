@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, Menu ,BrowserWindow } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -14,6 +14,7 @@ const winURL = process.env.NODE_ENV === 'development'
   : `file://${__dirname}/index.html`
 
 function createWindow () {
+  Menu.setApplicationMenu(null);
   /**
    * Initial window options
    */

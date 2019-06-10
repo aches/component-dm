@@ -7,7 +7,7 @@
         <el-button   size="small" type="primary"  @click="doPackage()">打包</el-button>
 
         <el-button   size="small" type="primary"  @click="createWidget()">新建微件</el-button>
-
+        <el-button style="float: right; " type="primary" @click="exportJson()" size="small">导出全部数据</el-button>
 
     <!--   <el-select v-model="selectNo" multiple  placeholder="请选择期号">
           <el-option
@@ -146,6 +146,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
+  const {dialog} = require('electron').remote;
   import {SettingService} from "../services/SettingService";
   import {ProjectService} from "../services/ProjectService";
   import 'xterm/dist/xterm.css';
@@ -244,6 +245,11 @@
           },
           newWidget() {
 
+          },
+          exportJson() {
+            console.log(this.projectList)
+
+            this.settingServices.exportJson(this.projectList)
           },
           doPackage() {
               if(this.multipleSelection.length == 0) {
