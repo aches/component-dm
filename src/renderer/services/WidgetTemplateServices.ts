@@ -10,6 +10,7 @@ export class WidgetTemplateServices {
         let mainVueHtml: any;
         let mainTs: any;
         let metaJson: any;
+        let languageJson: any;
         let viewModelHtml: any;
         let viewHandlerHtml: any;
         let threeViewHandler: any;
@@ -33,6 +34,7 @@ export class WidgetTemplateServices {
         }
         mainTs = this.generateCode(data, 'main');
         metaJson = this.generateCode(data, 'meta');
+        languageJson = this.generateCode(data, 'zh');
         viewHandlerHtml = this.generateCode(data, 'services/TemplateViewHandler' );
         threeViewHandler = this.generateCode(data, 'services/ThreejsViewHandler');
         three3dModel = this.generateCode(data, 'services/Threejs3dModel');
@@ -57,11 +59,16 @@ export class WidgetTemplateServices {
         if (!fs.existsSync( widgetPath + 'sub_static')) {
             fs.mkdirSync(widgetPath + 'sub_static');
         };
+        if (!fs.existsSync(widgetPath + 'sub_static/lang')) {
+            fs.mkdirSync(widgetPath + 'sub_static/lang');
+        }
+
         //插入模板代码
         this.insertCode(widgetPath + 'main.vue', mainVueHtml);
         this.insertCode(widgetPath + 'viewModel.ts', viewModelHtml);
         this.insertCode(widgetPath + 'main.ts', mainTs);
         this.insertCode(widgetPath + 'meta.json', metaJson);
+        this.insertCode(widgetPath + 'sub_static/lang/zh.json', languageJson);
 
         switch (data.technology) {
             case 'null':

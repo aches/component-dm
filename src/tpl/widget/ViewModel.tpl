@@ -6,7 +6,7 @@ import {<%= form.templateName %>} from './services/<%= form.templateName %>';
 const viewOptionConfig = require('./meta.json');
 @Component
 export class ViewModel extends Vue {
-
+  title = window.env.browserInfo.lang.title;
   created() {
     const viewOption = new ViewOption();
     viewOption.showMobileExpandIco = viewOptionConfig.config.showMobileExpandIco;

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import {ViewOption} from '../../../../src/core/CoreInterface';
 import {ViewController} from '../../../../src/core/ViewController';
-import {TemplateViewHandler} from './services/TemplateViewHandler';
+import {<%= form.templateName %>} from './services/<%= form.templateName %>';
 
 @Component
 export class ViewModel extends Vue {
@@ -33,7 +33,7 @@ export class ViewModel extends Vue {
           viewOption.showMobileResetIco = <%= form.resetMobile%>;
           viewOption.controlPanelAnimationDelay = <%= form.animationDelayTime%>;
           viewOption.showReset = <%= form.reset%>;
-        ViewController.getInstance(new TemplateViewHandler(this), viewOption);
+        ViewController.getInstance(new <%= form.templateName %>(this), viewOption);
         ViewController.getInstance().viewHandler.beforeRenderElement();
     }
 

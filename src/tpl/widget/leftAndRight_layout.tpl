@@ -2,7 +2,7 @@
     <div class="aspectration bg_white root_div_container" data-ratio="16:9">
         <leftAndRightLayout>
             <template slot="viewBox" scope="viewBox" slot-scope="viewBox">
-                <span id="title" class="title_text"><%= form.name %></span>
+                <span id="title" class="title_text">{{title}}</span>
                    <div id="3dContainer"></div>
             </template>
             <template slot="controlPanel" scope="viewBox" slot-scope="controlPanel">
@@ -32,7 +32,7 @@
 <style scoped="scoped">
     .title_text{
         font-size: 24px;
-        color: #000000;
+        color: #FFFFFF;
         line-height: 24px;
         margin: 0;
         padding:0;
