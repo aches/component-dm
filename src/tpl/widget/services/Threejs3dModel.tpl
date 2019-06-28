@@ -42,7 +42,7 @@ export class Threejs3dModel extends ThreeBase {
 
     initScene(): void {
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color( 0xffffff );
+        this.scene.background = new THREE.Color( 0x2D2D2D );
     }
 
 

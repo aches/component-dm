@@ -2,7 +2,7 @@
   <div class="aspectration bg_white covered root_div_container ">
       <fullScreensLayout>
               <template slot="viewBox" slot-scope="viewBox">
-                  <div class="title_text"><%= form.name %></div>
+                  <div class="title_text">{{title}}</div>
                   <div id="3dContainer"></div>
               </template>
               <template slot="controlPanel" slot-scope="controlPanel">
@@ -33,7 +33,7 @@ export default class App extends Vue {}
 <style scoped='scoped'>
     .title_text{
         font-size: 24px;
-        color: #000000;
+        color: #FFFFFF;
         line-height: 24px;
         margin: 0;
         padding:0;
