@@ -10,7 +10,7 @@ export class WidgetTemplateServices {
         let mainVueHtml: any;
         let mainTs: any;
         let metaJson: any;
-        let languageJson: any;
+        let languageJson: any[] = [];
         let viewModelHtml: any;
         let viewHandlerHtml: any;
         let threeViewHandler: any;
@@ -34,7 +34,8 @@ export class WidgetTemplateServices {
         }
         mainTs = this.generateCode(data, 'main');
         metaJson = this.generateCode(data, 'meta');
-        languageJson = this.generateCode(data, 'zh');
+        languageJson.push(this.generateCode(data, 'zh'));
+        languageJson.push(this.generateCode(data, 'en'));
         viewHandlerHtml = this.generateCode(data, 'services/TemplateViewHandler' );
         threeViewHandler = this.generateCode(data, 'services/ThreejsViewHandler');
         three3dModel = this.generateCode(data, 'services/Threejs3dModel');
@@ -68,7 +69,8 @@ export class WidgetTemplateServices {
         this.insertCode(widgetPath + 'viewModel.ts', viewModelHtml);
         this.insertCode(widgetPath + 'main.ts', mainTs);
         this.insertCode(widgetPath + 'meta.json', metaJson);
-        this.insertCode(widgetPath + 'sub_static/lang/zh.json', languageJson);
+        this.insertCode(widgetPath + 'sub_static/lang/zh.json', languageJson[0]);
+        this.insertCode(widgetPath + 'sub_static/lang/en.json', languageJson[1]);
 
         switch (data.technology) {
             case 'null':
