@@ -12,5 +12,7 @@
     "controlPanelAnimationDelay": <%= form.animationDelayTime%>,
     "isEncryption": <%= form.encryption%> ,
     "isForcedlandscape": <%= form.forcedLandscape%>
+    "isCompression": <%= form.encryption%>,
+    "isConfuseCode": <%= form.encryption%>
   }
 }
