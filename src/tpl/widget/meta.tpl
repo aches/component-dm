@@ -11,7 +11,7 @@
     "showMobileResetIco": <%= form.resetMobile%>,
     "controlPanelAnimationDelay": <%= form.animationDelayTime%>,
     "isEncryption": <%= form.encryption%> ,
-    "isForcedlandscape": <%= form.forcedLandscape%>
+    "isForcedlandscape": <%= form.forcedLandscape%>,
     "isCompression": <%= form.encryption%>,
     "isConfuseCode": <%= form.encryption%>
   }
