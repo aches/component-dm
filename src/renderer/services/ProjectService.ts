@@ -41,10 +41,11 @@ export class ProjectService{
 
         //await this.readFolder(projectConfig.widgetFolder);
         //console.log(projectConfig.widgetFolder);
-        await this.iteraFolder(projectConfig.widgetFolder);
+        console.log("widgetFolder", projectConfig.widgetFolder)
+        await this.iteraFolder(projectConfig.widgetFolder, "2017");
         this.xyCounts = this.project.length;
 
-        await this.iteraFolder(projectConfig.widgetSWFolder);
+        await this.iteraFolder(projectConfig.widgetSWFolder, "2018");
         this.swCounts = this.project.length - this.xyCounts;
         //console.log(this.project);
         //读取文件目录
@@ -52,11 +53,11 @@ export class ProjectService{
     }
 
 
-    async iteraFolder(folderPath: string){
+    async iteraFolder(folderPath: string, prefix: string){
         const categoryArry = await FilesUtil.readdir(folderPath) as Array<string>;
         //读取微件信息
         if(this.isWidget(categoryArry)) {
-            const widget = this.convertWidget(folderPath,'','');
+            const widget = this.convertWidget(folderPath,'','',prefix);
             this.nums.indexOf(widget.no) === -1 ? this.nums.push(widget.no) : void(0);
             this.project.push(widget);
             //console.log(widget);
@@ -70,7 +71,7 @@ export class ProjectService{
                 continue;
             }
             //console.info('childPath', childPath);
-            await this.iteraFolder(childPath )
+            await this.iteraFolder(childPath,prefix )
         }
 
 
@@ -85,7 +86,7 @@ export class ProjectService{
     /**
      * 转换为微件对象
      */
-    convertWidget(widgetPath: string,no: string, category: string) {
+    convertWidget(widgetPath: string,no: string, category: string, prefix: string) {
         //fsUtil
         const metaPath = path.join(widgetPath, 'meta.json');
         if(!FilesUtil.syncExistFolder(metaPath)) {
@@ -101,6 +102,7 @@ export class ProjectService{
         //"D:", "project", "huohua_component", "widget", "biology", "r12_jytbqs"
         //console.log(widgetPathArray)
         //console.log(widgetPathArray.indexOf('widget'));
+        widget.years = prefix;
         widget.author   = metaObj.author;
         widget.title    = metaObj.title;
         widget.path     = widgetPath;
@@ -114,6 +116,7 @@ export class ProjectService{
             + widgetPathArray[widgetPathArray.length-3] + path.sep
             + widgetPathArray[widgetPathArray.length-2] + path.sep
             + widgetPathArray[widgetPathArray.length-1]
+            console.log(widget);
         return widget;
 
     }
@@ -139,7 +142,7 @@ export class ProjectService{
             }
             const folder = temp.join(path.sep);
             const target = widget.alias;
-            const result = await CommandUtil.execPackageCmd(workspace,outputPath, folder, target,
+            const result = await CommandUtil.execPackageCmd(workspace,outputPath, widget.svnPath, target,
                 (data)=>{
                     window['$vue'].processContent += data ;
                     console.log(data.toString())

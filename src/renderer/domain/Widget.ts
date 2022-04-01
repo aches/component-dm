@@ -13,6 +13,8 @@ export class Widget {
 
     path:string;
 
+    years: string;
+
     dependencies:string;
 
     author:string;

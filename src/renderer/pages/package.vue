@@ -42,9 +42,21 @@
                 :default-sort = "{prop: 'no', order: 'descending'}"
                 @selection-change="handleSelectionChange">
           <el-table-column
+            type="index"
+            width="50">
+          </el-table-column>
+          <el-table-column
                   type="selection"
                   width="55">
           </el-table-column>
+          <el-table-column
+                  prop="years"
+                  :filters="allYears"
+                  :filter-method="filterHandler"
+                  label="创建年份"
+                  sortable
+                  width="120">
+                  </el-table-column>
           <el-table-column
                   prop="no"
                   :filters="allNums"
@@ -180,7 +192,7 @@
             selectSubject:[],
             selectNo:[],
             allNums:[],
-
+            allYears: [],
             filterSubject:['math'],
             subjects: [{
                 value: 'math',

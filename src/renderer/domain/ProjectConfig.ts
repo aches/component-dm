@@ -36,8 +36,8 @@ export class ProjectConfig {
         this.tsConfig       = path.join(basePath, '/tsconfig.json');
         this.indexTemplate  = path.join(basePath, '/index.html');
         this.srcFolder      = path.join(basePath, '/src');
-        this.widgetFolder           = path.join(basePath, '/widget');
-        this.widgetSWFolder           = path.join(basePath, '/widget_sw');
+        this.widgetFolder           = path.join(basePath, '/widget-2017');
+        this.widgetSWFolder           = path.join(basePath, '/widget-2018');
         this.publicStaticFolder     = path.join(basePath, '/static');
         //basePath +
 

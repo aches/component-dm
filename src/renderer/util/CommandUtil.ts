@@ -12,7 +12,7 @@ export class CommandUtil {
             //const ls = spawn(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['--version'],{ cwd : path });
             //['run','dev','--folder=widget\biology\r12','--target=r12_jytbqs'],
             const ls = spawn(/^win/.test(process.platform) ? 'npm.cmd' : 'npm',
-                ['run','build',`--folder=${folder}`,`--target=${target}`,'--single'],
+                ['run','build',`${folder}/Main`],
                 { cwd : workspace ,killSignal :'WIDGET'});
             //npm run dev --folder=D:\Workspaces\huohua_component\widget\biology\r12 --target=r12_jytbqs
             ls.stdout.on('data', (data) => {
@@ -32,7 +32,7 @@ export class CommandUtil {
                 const output = path.join(outputPath,target);
                 console.info('from', distPath);
                 console.info('to', output);
-                copydir.sync(distPath, output);
+                //copydir.sync(distPath, output);
 
                 console.log(`子进程退出码：${code}`);
 
